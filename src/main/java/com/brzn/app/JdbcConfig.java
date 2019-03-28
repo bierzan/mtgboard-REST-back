@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 @ComponentScan("com.brzn")
 public class JdbcConfig {
     @Bean
-    public DataSource mysqlDataSource() {
+    protected DataSource mysqlDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/mtg_bazaar");
