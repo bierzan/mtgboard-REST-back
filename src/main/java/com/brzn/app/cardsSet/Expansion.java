@@ -1,4 +1,4 @@
-package com.brzn.cardsSet;
+package com.brzn.app.cardsSet;
 
 enum Expansion {
     CORE("core"),
@@ -27,4 +27,8 @@ enum Expansion {
         return this.typeName;
     }
 
+    @Override
+    public String toString() {
+        return typeName;
+    }
 }

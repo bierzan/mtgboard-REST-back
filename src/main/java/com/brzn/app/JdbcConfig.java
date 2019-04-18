@@ -12,10 +12,10 @@ import javax.sql.DataSource;
 @ComponentScan("com.brzn")
 public class JdbcConfig {
     @Bean
-    protected DataSource mysqlDataSource() {
+    public DataSource mysqlDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/mtg_bazaar");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/mtg_board");
         dataSource.setUsername("root");
         dataSource.setPassword("coderslab");
 
