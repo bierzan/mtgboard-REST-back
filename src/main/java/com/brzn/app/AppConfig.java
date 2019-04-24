@@ -9,6 +9,8 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -80,6 +82,11 @@ public class AppConfig implements WebMvcConfigurer {
         dataSource.setUsername("root");
         dataSource.setPassword("coderslab");
         return dataSource;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 
