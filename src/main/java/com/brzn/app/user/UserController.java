@@ -22,6 +22,7 @@ public class UserController {
     @PostMapping("/users/")
     public ResponseEntity<Void> createUser(@RequestBody User user) {
         try {
+            userService.saveUser(user);
             return ResponseEntity.created(new URI("/users/" + user.getId())).build();
         } catch (URISyntaxException e) {
             e.printStackTrace();
