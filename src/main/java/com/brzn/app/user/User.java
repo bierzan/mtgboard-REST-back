@@ -1,6 +1,10 @@
 package com.brzn.app.user;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -11,8 +15,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotEmpty
     private String username;
+
+    @Email
     private String email;
+
+    @Size(min = 8)
     private String password;
 
     public User() {

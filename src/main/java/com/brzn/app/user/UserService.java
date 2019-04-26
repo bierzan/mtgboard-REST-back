@@ -10,8 +10,8 @@ import javax.transaction.Transactional;
 @Transactional
 public class UserService {
 
-    UserDao userDao;
-    PasswordEncoder passwordEncoder;
+    private UserDao userDao;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(UserDao userDao, PasswordEncoder passwordEncoder) {
@@ -19,10 +19,14 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public User saveUser(User user) {
+    public void saveUser(User user) {
+        User userWithHashedPassword = getUserWithHashedPassword(user);
+        userDao.save(userWithHashedPassword);
+//        return userWithHashedPassword;
+    }
+
+    private User getUserWithHashedPassword(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userDao.save(user);
-        //todo dodac hashowanie hasła
         return user;
     }
 }
