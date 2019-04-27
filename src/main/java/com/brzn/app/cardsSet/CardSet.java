@@ -10,21 +10,19 @@ import java.time.LocalDate;
 public class CardSet {
     private String code;
     private String name;
-    private String type;
     private LocalDate releaseDate;
-    private Enum expansion;
+    private String type;
     private String block;
 
-    public CardSet(){
+    public CardSet() {
 
     }
 
 
-    public CardSet(String code, String name, String type, String expansion, String block) {
+    public CardSet(String code, String name, String type, String block) {
         this.code = code;
         this.name = name;
         this.type = type;
-        this.expansion = Expansion.valueOf(expansion);
         this.block = block;
     }
 
@@ -35,13 +33,22 @@ public class CardSet {
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", releaseDate=" + releaseDate +
-                ", expansion=" + expansion +
+                ", expansion=" + type +
                 ", block='" + block + '\'' +
                 '}';
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public void setBlock(String block) {
+        this.block = block;
     }
 
     public String getCode() {
@@ -52,20 +59,25 @@ public class CardSet {
         return name;
     }
 
-    public String getType() {
-        return type;
+
+    public String getBlock() {
+        return block;
     }
 
     public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
-    public Enum getExpansion() {
-        return expansion;
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
-    public String getBlock() {
-        return block;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
 
