@@ -10,13 +10,14 @@ import javax.validation.constraints.Size;
 @Table(name = "users")
 public class User {
 
-    //todo dodac walidacje
+    //todo informacje o walidacji nakladaja sie. dodac na froncie czyszczenie + info z ktorego pola pochodzi
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotEmpty
+    @Column(unique = true)
     private String username;
 
     @Email

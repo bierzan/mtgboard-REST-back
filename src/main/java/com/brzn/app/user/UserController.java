@@ -1,5 +1,6 @@
 package com.brzn.app.user;
 
+import com.brzn.app.exceptionHandler.SQLRecordNotUniqueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,14 +24,10 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody User user) {
-        try {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody User user) throws SQLRecordNotUniqueException, URISyntaxException {
+
             userService.saveUser(user);
             return ResponseEntity.created(new URI("/users/" + user.getId())).build();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
         }
     }
 
-}
