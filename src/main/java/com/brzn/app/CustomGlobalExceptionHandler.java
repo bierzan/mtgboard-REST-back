@@ -23,16 +23,17 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                                                                   HttpStatus status,
                                                                   WebRequest request){
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        body.put("timestamp", LocalDateTime.now().toString());
         body.put("status", status.value());
 
         List<String> exceptions = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(x->x.getDefaultMessage())
+                .map(x-> x.getField() + ": " + x.getDefaultMessage())
                 .collect(Collectors.toList());
 
         body.put("exceptions", exceptions);
+
         return new ResponseEntity<>(body, headers, status);
     }
 }
