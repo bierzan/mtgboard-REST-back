@@ -8,21 +8,20 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class UserService {
+class UserService {
 
-    private UserDao userDao;
+    private UserRepo userRepo;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserDao userDao, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-        this.userDao = userDao;
+        this.userRepo = userRepo;
     }
 
     public void saveUser(User user) {
         User userWithHashedPassword = getUserWithHashedPassword(user);
-        userDao.save(userWithHashedPassword);
-//        return userWithHashedPassword;
+        userRepo.save(userWithHashedPassword);
     }
 
     private User getUserWithHashedPassword(User user){
@@ -30,3 +29,5 @@ public class UserService {
         return user;
     }
 }
+
+//todo sprawdzenie unikalnosc maila i username + wlasny exception
