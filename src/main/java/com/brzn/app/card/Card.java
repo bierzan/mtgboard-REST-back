@@ -1,299 +1,98 @@
 package com.brzn.app.card;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
+import com.brzn.app.card.color.Color;
+import com.brzn.app.cardsSet.CardSet;
+import lombok.Getter;
+import lombok.Setter;
 
-public class Card implements Serializable {
-	private String id;
-	private String layout;
-	private String name;
-	private String[] names;
-	private String manaCost;
-	private double cmc;
-	private String[] colors;
-	private String[] colorIdentity;
-	private String type;
-	private String[] supertypes;
-	private String[] types;
-	private String[] subtypes;
-	private String rarity;
-	private String text;
-	private String originalText;
-	private String flavor;
-	private String artist;
-	private String number;
-	private String power;
-	private String toughness;
-	private String loyalty;
-	private int multiverseid = -1;
-	private String[] variations;
-	private String imageName;
-	private String watermark;
-	private String border;
-	private boolean timeshifted;
-	private int hand;
-	private int life;
-	private boolean reserved;
-	private String releaseDate;
-	private boolean starter;
-	private String set;
-	private String setName;
-	private String[] printings;
-	private String imageUrl;
-	private Legality[] legalities;
-	private BigDecimal priceHigh;
-	private BigDecimal priceMid;
-	private BigDecimal priceLow;
-	private BigDecimal onlinePriceHigh;
-	private BigDecimal onlinePriceMid;
-	private BigDecimal onlinePriceLow;
-	private Ruling[] rulings;
-	private ForeignData[] foreignNames;
+import javax.persistence.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
-	public String getId() {
-		return id;
-	}
+@Entity
+@Table(name = "cards")
+public class Card {
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-	public String getLayout() {
-		return layout;
-	}
+    @Getter
+    @Setter
+    private long id;
 
-	public void setLayout(String layout) {
-		this.layout = layout;
-	}
+    @Getter
+    @Setter
+    private String name;
+    // private List<String> names = new ArrayList<>(); DLA KART DWUSTRONNYCH
 
-	public String getName() {
-		return name;
-	}
+    @Getter
+    @Setter
+    private String manaCost;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Getter
+    @Setter
+    private String cmc;
 
-	public String[] getNames() {
-		return names;
-	}
+    @Getter
+    @Setter
+    @ManyToMany
+    @JoinTable(name = "cards_colors", joinColumns = @JoinColumn(name = "card_id"), inverseJoinColumns = @JoinColumn(name = "color_id"))
+    private List<Color> colors = new ArrayList<>();
 
-	public void setNames(String[] names) {
-		this.names = names;
-	}
+    @Getter
+    @Setter
+    private String type;
+    //    private List<String> supertypes = new ArrayList<>();
+//    private List<String> types = new ArrayList<>();
+//    private List<String> subtypes = new ArrayList<>();
+    @Getter
+    @Setter
+    private String rarity;
 
-	public String getManaCost() {
-		return manaCost;
-	}
+    @Getter
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "card_set_id")
+    private CardSet set; //todo zrobienie relacji
 
-	public void setManaCost(String manaCost) {
-		this.manaCost = manaCost;
-	}
+    @Getter
+    @Setter
+    private String text;
 
-	public double getCmc() {
-		return cmc;
-	}
+    @Getter
+    @Setter
+    private String artist;
 
-	public void setCmc(double cmc) {
-		this.cmc = cmc;
-	}
+    @Getter
+    @Setter
+    private String number;
 
-	public String[] getColors() {
-		return colors;
-	}
+    @Getter
+    @Setter
+    private String power;
 
-	public void setColors(String[] colors) {
-		this.colors = colors;
-	}
+    @Getter
+    @Setter
+    private String toughness;
 
-	public String[] getColorIdentity() {
-		return colorIdentity;
-	}
+    @Getter
+    @Setter
 
-	public void setColorIdentity(String[] colorIdentity) {
-		this.colorIdentity = colorIdentity;
-	}
+    private String layout;
+    @Getter
+    @Setter
+    private long multiverseid;
 
-	public String getType() {
-		return type;
-	}
+    @Getter
+    @Setter
+    private URL imageUrl;
 
-	public void setType(String type) {
-		this.type = type;
-	}
+//    private List<CardSet> printings; //todo sprawdzic czy sie da
 
-	public String[] getSupertypes() {
-		return supertypes;
-	}
 
-	public void setSupertypes(String[] supertypes) {
-		this.supertypes = supertypes;
-	}
+    public Card() {
+    }
 
-	public String[] getTypes() {
-		return types;
-	}
+}
 
-	public void setTypes(String[] types) {
-		this.types = types;
-	}
-
-	public String[] getSubtypes() {
-		return subtypes;
-	}
-
-	public void setSubtypes(String[] subtypes) {
-		this.subtypes = subtypes;
-	}
-
-	public String getRarity() {
-		return rarity;
-	}
-
-	public void setRarity(String rarity) {
-		this.rarity = rarity;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public String getFlavor() {
-		return flavor;
-	}
-
-	public void setFlavor(String flavor) {
-		this.flavor = flavor;
-	}
-
-	public String getArtist() {
-		return artist;
-	}
-
-	public void setArtist(String artist) {
-		this.artist = artist;
-	}
-
-	public String getNumber() {
-		return number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
-
-	public String getPower() {
-		return power;
-	}
-
-	public void setPower(String power) {
-		this.power = power;
-	}
-
-	public String getToughness() {
-		return toughness;
-	}
-
-	public void setToughness(String toughness) {
-		this.toughness = toughness;
-	}
-
-	public String getLoyalty() {
-		return loyalty;
-	}
-
-	public void setLoyalty(String loyalty) {
-		this.loyalty = loyalty;
-	}
-
-	public int getMultiverseid() {
-		return multiverseid;
-	}
-
-	public void setMultiverseid(int multiverseid) {
-		this.multiverseid = multiverseid;
-	}
-
-	public String[] getVariations() {
-		return variations;
-	}
-
-	public void setVariations(String[] variations) {
-		this.variations = variations;
-	}
-
-	public String getImageName() {
-		return imageName;
-	}
-
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
-	}
-
-	public String getWatermark() {
-		return watermark;
-	}
-
-	public void setWatermark(String watermark) {
-		this.watermark = watermark;
-	}
-
-	public String getBorder() {
-		return border;
-	}
-
-	public void setBorder(String border) {
-		this.border = border;
-	}
-
-	public boolean isTimeshifted() {
-		return timeshifted;
-	}
-
-	public void setTimeshifted(boolean timeshifted) {
-		this.timeshifted = timeshifted;
-	}
-
-	public int getHand() {
-		return hand;
-	}
-
-	public void setHand(int hand) {
-		this.hand = hand;
-	}
-
-	public int getLife() {
-		return life;
-	}
-
-	public void setLife(int life) {
-		this.life = life;
-	}
-
-	public boolean isReserved() {
-		return reserved;
-	}
-
-	public void setReserved(boolean reserved) {
-		this.reserved = reserved;
-	}
-
-	public String getReleaseDate() {
-		return releaseDate;
-	}
-
-	public void setReleaseDate(String releaseDate) {
-		this.releaseDate = releaseDate;
-	}
-
-	public boolean isStarter() {
-		return starter;
-	}
-
-	public void setStarter(boolean starter) {
-		this.starter = starter;
-	}}
