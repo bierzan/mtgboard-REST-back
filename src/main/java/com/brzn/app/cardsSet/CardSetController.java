@@ -2,6 +2,7 @@ package com.brzn.app.cardsSet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -11,8 +12,15 @@ import java.io.IOException;
 @RestController
 public class CardSetController {
 
+    CardSetService cardSetService;
+
+    @Autowired
+    public CardSetController(CardSetService cardSetService) {
+        this.cardSetService = cardSetService;
+    }
+
     @GetMapping("/saveAll")
-    public CardSetList addAllSets() {
+    public CardSetList addAllSets() throws IOException {
         RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.getInterceptors().add((request, body, execution) -> {
@@ -25,12 +33,10 @@ public class CardSetController {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        CardSetList csl = null;
-        try {
-            csl = mapper.readValue(jsonString, CardSetList.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        CardSetList csl = mapper.readValue(jsonString, CardSetList.class);
+
+        csl.getSets().stream()
+                .forEach(x->cardSetService.saveCardSet(x));
         return csl;
     }
 
