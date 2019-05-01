@@ -44,6 +44,7 @@ public class CardSet {
 
     }
 
-
-
+    public CardSet(String name) {
+        this.name = name;
+    }
 }

@@ -1,22 +1,22 @@
 package com.brzn.app.card;
 
-import com.brzn.app.card.color.Color;
 import com.brzn.app.cardsSet.CardSet;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "cards")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
 public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Getter
     @Setter
     private long id;
@@ -24,7 +24,10 @@ public class Card {
     @Getter
     @Setter
     private String name;
-    // private List<String> names = new ArrayList<>(); DLA KART DWUSTRONNYCH
+
+    @Getter
+    @Setter
+    private String names;
 
     @Getter
     @Setter
@@ -36,16 +39,12 @@ public class Card {
 
     @Getter
     @Setter
-    @ManyToMany
-    @JoinTable(name = "cards_colors", joinColumns = @JoinColumn(name = "card_id"), inverseJoinColumns = @JoinColumn(name = "color_id"))
-    private List<Color> colors = new ArrayList<>();
+    private String colors;
 
     @Getter
     @Setter
     private String type;
-    //    private List<String> supertypes = new ArrayList<>();
-//    private List<String> types = new ArrayList<>();
-//    private List<String> subtypes = new ArrayList<>();
+
     @Getter
     @Setter
     private String rarity;
@@ -54,11 +53,15 @@ public class Card {
     @Setter
     @ManyToOne
     @JoinColumn(name = "card_set_id")
-    private CardSet set; //todo zrobienie relacji
+    private CardSet set;
 
     @Getter
     @Setter
     private String text;
+
+    @Getter
+    @Setter
+    private String flavor;
 
     @Getter
     @Setter
@@ -78,18 +81,15 @@ public class Card {
 
     @Getter
     @Setter
-
     private String layout;
+
     @Getter
     @Setter
-    private long multiverseid;
+    private long multiverseId;
 
     @Getter
     @Setter
     private URL imageUrl;
-
-//    private List<CardSet> printings; //todo sprawdzic czy sie da
-
 
     public Card() {
     }

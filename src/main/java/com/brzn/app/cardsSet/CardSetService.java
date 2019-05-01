@@ -19,4 +19,8 @@ public class CardSetService {
     public void saveCardSet(CardSet cardSet) {
         cardSetRepo.save(cardSet);
     }
+
+    public CardSet findBySetName(String name){
+        return cardSetRepo.findByName(name);
+    }
 }

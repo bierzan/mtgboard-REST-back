@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CardRepo extends JpaRepository<Card, Long> {
-    @Query(value = "SELECT * FROM cards where upper(name) like %upper(?1)% ")
+    @Query(value = "SELECT * FROM cards where upper(name) like concat('%',upper(?1),'%')", nativeQuery = true)
     List<Card> findAllByPartialName(String name);
 }
