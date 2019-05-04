@@ -51,13 +51,14 @@ public class CardController {
     }
 
 
-    @GetMapping("/name-part/{name}")
-    ResponseEntity<List<Card>> getCardByPartialName(@PathVariable("name") String name) {
+    @GetMapping("/name/like/{name}")
+    ResponseEntity<List<Card>> getCardByPartialName(@PathVariable("name") String name)throws IOException{
         List<Card> cards = cardService.findAllByPartialName(name);
-        if (cards.size() > 0) {
-            return ResponseEntity.ok(cards);
+        if (cards.size() == 0) {
+            cards = cardService.getCardsFromExternalAPI(name);
         }
-        return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(cards);
 
     }
 
