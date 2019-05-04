@@ -28,7 +28,7 @@ public class CardSetController {
             return execution.execute(request, body);
         });
 
-        String jsonString = restTemplate.getForObject("https://api.magicthegathering.io/v1/sets?name=Ravnica", String.class);
+        String jsonString = restTemplate.getForObject("https://api.magicthegathering.io/v1/sets", String.class);
         System.out.println(jsonString);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -36,7 +36,7 @@ public class CardSetController {
         CardSetList csl = mapper.readValue(jsonString, CardSetList.class);
 
         csl.getSets().stream()
-                .forEach(x->cardSetService.saveCardSet(x));
+                .forEach(x -> cardSetService.saveCardSet(x));
         return csl;
     }
 

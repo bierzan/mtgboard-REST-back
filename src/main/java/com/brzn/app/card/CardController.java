@@ -35,7 +35,7 @@ public class CardController {
             return execution.execute(request, body);
         });
 
-        String jsonString = restTemplate.getForObject("https://api.magicthegathering.io/v1/cards?name=Shock in the ice", String.class);
+        String jsonString = restTemplate.getForObject("https://api.magicthegathering.io/v1/cards?name=Shock", String.class);
         System.out.println(jsonString);
 
         ObjectMapper mapper = new ObjectMapper();
