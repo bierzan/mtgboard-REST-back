@@ -31,7 +31,7 @@ public class CardService {
 
     List<Card> getCardsFromExternalAPI(String name) throws IOException {
 
-        String apiUrl = String.format("https://api.magicthegathering.io/v1/cards?name=,%s",name);
+        String apiUrl = String.format("https://api.magicthegathering.io/v1/cards?name=%s",name);
         RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.getInterceptors().add((request, body, execution) -> {

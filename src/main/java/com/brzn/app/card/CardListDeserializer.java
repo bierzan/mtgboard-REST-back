@@ -47,7 +47,10 @@ public class CardListDeserializer extends StdDeserializer<CardList> {
         for (JsonNode node : jsonCards) {
             Card card = new Card();
             card.setName(node.get("name").asText());
-            card.setManaCost(node.get("manaCost").asText());
+
+            if (node.has("manaCost")) {
+                card.setManaCost(node.get("manaCost").asText());
+            }
 
             if (node.has("names")) {
                 StringBuilder sb = new StringBuilder();
@@ -56,7 +59,9 @@ public class CardListDeserializer extends StdDeserializer<CardList> {
                     sb.append(" / ");
                 }
                 String names = sb.toString();
-                card.setNames(names.substring(0, names.length() - 3));
+                if (names.length() > 0) {
+                    card.setNames(names.substring(0, names.length() - 3));
+                }
             }
 
             card.setCmc(node.get("cmc").asText());
