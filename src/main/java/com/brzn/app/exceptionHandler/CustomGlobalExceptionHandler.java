@@ -10,11 +10,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice("com.brzn.app")
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(value = { EntityNotFoundException.class })
+    protected ResponseEntity<Object> handleNotFound(final RuntimeException ex, final WebRequest request,
+                                                    HttpHeaders headers, HttpStatus status) {
+
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), ex.getClass().toString());
+        return new ResponseEntity<Object>(apiError, headers, apiError.getStatus());
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,

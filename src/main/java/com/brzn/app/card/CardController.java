@@ -4,10 +4,7 @@ import com.brzn.app.cardsSet.CardSetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -15,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cards")
-public class CardController {
+class CardController {
 
     CardService cardService;
     CardSetService cardSetService;
@@ -35,7 +32,7 @@ public class CardController {
             return execution.execute(request, body);
         });
 
-        String jsonString = restTemplate.getForObject("https://api.magicthegathering.io/v1/cards?name=Shock in the ice", String.class);
+        String jsonString = restTemplate.getForObject("https://api.magicthegathering.io/v1/cards?name=Shock", String.class);
         System.out.println(jsonString);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -51,14 +48,34 @@ public class CardController {
     }
 
 
-    @GetMapping("/name-part/{name}")
-    ResponseEntity<List<Card>> getCardByPartialName(@PathVariable("name") String name) {
+    @GetMapping("/name/like/{name}")
+    ResponseEntity<List<Card>> getCardByPartialName(@PathVariable("name") String name)throws IOException{
         List<Card> cards = cardService.findAllByPartialName(name);
-        if (cards.size() > 0) {
-            return ResponseEntity.ok(cards);
+        if (cards.size() == 0) {
+            cards = cardService.getCardsFromExternalAPI(name);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(cards);
+    }
 
+    @GetMapping("name/set/{name}/{setName}")
+    ResponseEntity<Card> getCardByNameAndSetName(@PathVariable ("name") String name,
+                                                 @PathVariable ("setName") String setName){
+        Card card = cardService.getCardByNameAndSetName(name, setName);
+        if(card==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(card);
+    }
+
+    @PostMapping("name/set/{name}/{setName}")
+    ResponseEntity<Card> postCardByNameAndSetName(@PathVariable ("name") String name,
+                                                 @PathVariable ("setName") String setName) throws IOException{
+        Card card = cardService.postCardByNameAndSetName(name, setName);
+        if(card==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(card);
     }
 
 }
+
