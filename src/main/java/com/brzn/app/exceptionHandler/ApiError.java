@@ -27,6 +27,8 @@ class ApiError {
         errors = Arrays.asList(error);
     }
 
+
+
     public HttpStatus getStatus() {
         return status;
     }

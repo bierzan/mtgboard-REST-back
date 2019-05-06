@@ -57,6 +57,7 @@ public class Card {
 
     @Getter
     @Setter
+    @Column(columnDefinition = "TEXT")
     private String text;
 
     @Getter
