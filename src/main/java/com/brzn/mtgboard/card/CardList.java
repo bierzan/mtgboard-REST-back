@@ -1,4 +1,4 @@
-package com.brzn.app.card;
+package com.brzn.mtgboard.card;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

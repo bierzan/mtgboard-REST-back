@@ -1,7 +1,7 @@
-package com.brzn.app.card;
+package com.brzn.mtgboard.card;
 
-import com.brzn.app.cardsSet.CardSet;
-import com.brzn.app.cardsSet.CardSetRepo;
+import com.brzn.mtgboard.cardsSet.CardSet;
+import com.brzn.mtgboard.cardsSet.CardSetRepo;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -78,7 +78,9 @@ public class CardListDeserializer extends StdDeserializer<CardList> {
 
             card.setType(node.get("type").asText());
             card.setRarity(node.get("rarity").asText());
-            card.setText(node.get("text").asText());
+            if (node.has("text")) {
+                card.setText(node.get("text").asText());
+            }
             if (node.hasNonNull("flavor")) card.setFlavor(node.get("flavor").asText());
             card.setArtist(node.get("artist").asText());
             card.setNumber(node.get("number").asText());

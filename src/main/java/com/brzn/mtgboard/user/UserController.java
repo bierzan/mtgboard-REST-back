@@ -1,6 +1,6 @@
-package com.brzn.app.user;
+package com.brzn.mtgboard.user;
 
-import com.brzn.app.exceptionHandler.SQLRecordNotUniqueException;
+import com.brzn.mtgboard.exceptionHandler.SQLRecordNotUniqueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

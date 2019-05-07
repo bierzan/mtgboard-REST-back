@@ -1,6 +1,7 @@
-package com.brzn.app.card;
+package com.brzn.mtgboard.card;
 
-import com.brzn.app.cardsSet.CardSet;
+
+import com.brzn.mtgboard.cardsSet.CardSet;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -86,7 +87,7 @@ public class Card {
 
     @Getter
     @Setter
-    private long multiverseId;
+    private long multiverseId = 0;
 
     @Getter
     @Setter

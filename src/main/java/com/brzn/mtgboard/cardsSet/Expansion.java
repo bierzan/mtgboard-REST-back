@@ -1,4 +1,4 @@
-package com.brzn.app.cardsSet;
+package com.brzn.mtgboard.cardsSet;
 
 enum Expansion {
     CORE("core"),

@@ -1,4 +1,4 @@
-package com.brzn.app.user;
+package com.brzn.mtgboard.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.brzn.app.user;
+package com.brzn.mtgboard.user;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;

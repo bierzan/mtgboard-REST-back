@@ -1,4 +1,4 @@
-package com.brzn.app.exceptionHandler;
+package com.brzn.mtgboard.exceptionHandler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
