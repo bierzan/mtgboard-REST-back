@@ -1,4 +1,4 @@
-package com.brzn.app.cardsSet;
+package com.brzn.mtgboard.cardsSet;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

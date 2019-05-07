@@ -1,6 +1,6 @@
-package com.brzn.app.card;
+package com.brzn.mtgboard.card;
 
-import com.brzn.app.cardsSet.CardSetService;
+import com.brzn.mtgboard.cardsSet.CardSetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

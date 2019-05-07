@@ -1,8 +1,7 @@
-package com.brzn.app.user;
+package com.brzn.mtgboard.user;
 
-import com.brzn.app.exceptionHandler.SQLRecordNotUniqueException;
+import com.brzn.mtgboard.exceptionHandler.SQLRecordNotUniqueException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,13 +11,13 @@ import javax.transaction.Transactional;
 class UserService {
 
     private UserRepo userRepo;
-    private PasswordEncoder passwordEncoder;
+//    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+    public UserService(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
+
 
     public void saveUser(User user) throws SQLRecordNotUniqueException {
         if (isUsernameUnique(user.getUsername())) {
@@ -26,16 +25,16 @@ class UserService {
         } else if (isUserEmailUnique(user.getEmail())) {
             throw new SQLRecordNotUniqueException("taki e-mail już jest zarejestrowany");
         }
-        User userWithHashedPassword = getUserWithHashedPassword(user);
-        userRepo.save(userWithHashedPassword);
+
+        userRepo.save(user);
     }
 
 
-    private User getUserWithHashedPassword(User user) {
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return user;
-    }
+//    private User getUserWithHashedPassword(User user) {
+//
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        return user;
+//    }
 
     private boolean isUsernameUnique(String username) {
         if (userRepo.findByUsername(username) == null) {
