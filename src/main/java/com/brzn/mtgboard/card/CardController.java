@@ -57,7 +57,7 @@ class CardController {
         return ResponseEntity.ok(cards);
     }
 
-    @GetMapping("name/set/{name}/{setName}")
+    @GetMapping("/name/set/{name}/{setName}")
     ResponseEntity<Card> getCardByNameAndSetName(@PathVariable ("name") String name,
                                                  @PathVariable ("setName") String setName){
         Card card = cardService.getCardByNameAndSetName(name, setName);
@@ -67,7 +67,7 @@ class CardController {
         return ResponseEntity.ok(card);
     }
 
-    @PostMapping("name/set/{name}/{setName}")
+    @PostMapping("/name/set/{name}/{setName}")
     ResponseEntity<Card> postCardByNameAndSetName(@PathVariable ("name") String name,
                                                  @PathVariable ("setName") String setName) throws IOException{
         Card card = cardService.postCardByNameAndSetName(name, setName);
@@ -75,6 +75,15 @@ class CardController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(card);
+    }
+
+    @PostMapping("/name/{name}")
+    ResponseEntity<List<Card>> postCardsByName(@PathVariable ("name") String name) throws IOException{
+        List <Card> cards = cardService.postCardsByName(name);
+        if(cards==null || cards.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(cards);
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,44 +22,66 @@ public class CardService {
     CardSetService cardSetService;
 
     @Autowired
-    public CardService(CardRepo cardRepo, CardSetRepo cardSetRepo,CardSetService cardSetService) {
+    public CardService(CardRepo cardRepo, CardSetRepo cardSetRepo, CardSetService cardSetService) {
         this.cardRepo = cardRepo;
         this.cardSetRepo = cardSetRepo;
         this.cardSetService = cardSetService;
     }
 
-    public void save(Card card){
+    public void save(Card card) {
         cardRepo.save(card);
     }
 
-    List<Card> findAllByPartialName(String name)throws IOException{
+    List<Card> findAllByPartialName(String name) throws IOException {
 
         return cardRepo.findAllByPartialName(name);
     }
 
     List<Card> getCardsFromExternalAPI(String name) throws IOException {
 
-        String apiUrl = String.format("https://api.magicthegathering.io/v1/cards?name=%s",name);
+        String apiUrl = String.format("https://api.magicthegathering.io/v1/cards?name=%s", name);
         CardList cardsFromAPI = mapToCardListClassFromAPI(apiUrl);
         return cardsFromAPI.getCards();
     }
 
-    Card getCardByNameAndSetName(String cardName, String setName){
-        return cardRepo.findByNameAndSetName(cardName,setName);
+    Card getCardByNameAndSetName(String cardName, String setName) {
+        return cardRepo.findByNameAndSetName(cardName, setName);
 
     }
 
-    protected Card postCardByNameAndSetName(String cardName, String setName) throws IOException{ //todo dorobic handler
-        String apiUrl = String.format("https://api.magicthegathering.io/v1/cards?name=%s&setName=%s",cardName, setName);
+    protected Card postCardByNameAndSetName(String cardName, String setName) throws IOException { //todo dorobic handler
+        String apiUrl = String.format("https://api.magicthegathering.io/v1/cards?name=%s&setName=%s", cardName, setName);
         Card card = mapToCardListClassFromAPI(apiUrl).getCards().stream().findFirst().orElseThrow(IOException::new);
+        setCardSetForCard(card);
+        cardRepo.save(card);
+        return card;
+    }
+
+    private void setCardSetForCard(Card card) throws IOException {
         CardSet set = cardSetRepo.findByName(card.getSet().getName());
-        if (set==null){
+        if (set == null) {
             set = cardSetService.getCardSetByNameFromAPI(card.getSet().getName());
+            cardSetService.saveCardSet(set);
         }
         card.setSet(set);
         cardSetService.saveCardSet(set);
-        cardRepo.save(card);
-        return card;
+    }
+
+    protected List<Card> postCardsByName(String name) throws IOException {
+        List<Card> cardsFromAPI = getCardsFromExternalAPI(name);
+        if (cardsFromAPI.isEmpty()) {
+            return cardsFromAPI;
+        }
+        List<Card> postedCards = new ArrayList<>();
+
+        for (Card card : cardsFromAPI) {
+
+            setCardSetForCard(card);
+            cardRepo.save(card);
+            postedCards.add(card);
+        }
+
+        return postedCards;
     }
 
     private CardList mapToCardListClassFromAPI(String apiUrl) throws IOException {
