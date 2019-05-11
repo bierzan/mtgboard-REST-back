@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 @Transactional
 public class CardService {
 
-    private CardRepo cardRepo;
-    private CardSetRepo cardSetRepo;
-    private CardSetService cardSetService;
+    CardRepo cardRepo;
+    CardSetRepo cardSetRepo;
+    CardSetService cardSetService;
 
     @Autowired
     public CardService(CardRepo cardRepo, CardSetRepo cardSetRepo, CardSetService cardSetService) {
@@ -33,7 +33,7 @@ public class CardService {
         cardRepo.save(card);
     }
 
-    List<Card> findAllByPartialName(String name){
+    List<Card> findAllByPartialName(String name) throws IOException {
 
         return cardRepo.findAllByPartialName(name);
     }
