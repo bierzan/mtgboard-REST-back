@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -25,8 +26,12 @@ class UserService {
         } else if (isUserEmailUnique(user.getEmail())) {
             throw new SQLRecordNotUniqueException("taki e-mail już jest zarejestrowany");
         }
+        user.setRegistered(LocalDateTime.now());
+        user.setLogged(LocalDateTime.now());
+        user.setEnabled(true);
+        user.setRole(Role.USER);
 
-        userRepo.save(user);
+        userRepo.save(getUserWithHashedPassword(user));
     }
 
 
