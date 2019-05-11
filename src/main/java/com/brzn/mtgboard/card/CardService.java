@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -68,7 +69,9 @@ public class CardService {
     }
 
     protected List<Card> postCardsByName(String name) throws IOException {
-        List<Card> cardsFromAPI = getCardsFromExternalAPI(name);
+        List<Card> cardsFromAPI = getCardsFromExternalAPI(name).stream()
+                .filter(card->card.getName().equalsIgnoreCase(name))
+                .collect(Collectors.toList());
         if (cardsFromAPI.isEmpty()) {
             return cardsFromAPI;
         }
