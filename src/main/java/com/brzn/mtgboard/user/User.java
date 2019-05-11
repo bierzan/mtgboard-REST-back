@@ -1,16 +1,13 @@
 package com.brzn.mtgboard.user;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
 public class User {
-
-    //todo informacje o walidacji nakladaja sie. dodac na froncie czyszczenie + info z ktorego pola pochodzi
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

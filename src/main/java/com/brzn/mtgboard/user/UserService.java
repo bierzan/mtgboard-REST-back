@@ -1,6 +1,7 @@
 package com.brzn.mtgboard.user;
 
 import com.brzn.mtgboard.exceptionHandler.SQLRecordNotUniqueException;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,6 @@ import javax.transaction.Transactional;
 class UserService {
 
     private UserRepo userRepo;
-//    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(UserRepo userRepo) {
@@ -30,23 +30,17 @@ class UserService {
     }
 
 
-//    private User getUserWithHashedPassword(User user) {
-//
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        return user;
-//    }
+    private User getUserWithHashedPassword(User user) {
+
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        return user;
+    }
 
     private boolean isUsernameUnique(String username) {
-        if (userRepo.findByUsername(username) == null) {
-            return false;
-        }
-        return true;
+        return userRepo.findByUsername(username) != null;
     }
 
     private boolean isUserEmailUnique(String email) {
-        if (userRepo.findByEmail(email) == null) {
-            return false;
-        }
-        return true;
+        return userRepo.findByEmail(email) != null;
     }
 }
