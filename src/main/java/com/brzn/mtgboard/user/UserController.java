@@ -2,7 +2,6 @@ package com.brzn.mtgboard.user;
 
 import com.brzn.mtgboard.exceptionHandler.SQLRecordNotUniqueException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +12,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("/users")
@@ -37,7 +35,7 @@ public class UserController {
 
     @PostMapping("/login") //todo obsluga wyjatu
     public ResponseEntity<UserToken> loginUser(@Valid @RequestBody UserDTO user) throws HttpClientErrorException {
-        UserToken token = userService.authorize(user);
+        UserToken token = userService.generateUserToken(user);
         return ResponseEntity.ok(token);
     }
 }

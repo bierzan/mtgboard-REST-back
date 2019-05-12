@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
 @Service
@@ -25,9 +23,9 @@ class UserService {
 
 
     public void saveUser(User user) throws SQLRecordNotUniqueException {
-        if (isUsernameUnique(user.getUsername())) {
+        if (ifUsernameExists(user.getUsername())) {
             throw new SQLRecordNotUniqueException("użytkownik o takiej nazwie już jest zarejestrowany");
-        } else if (isUserEmailUnique(user.getEmail())) {
+        } else if (ifUserEmailExists(user.getEmail())) {
             throw new SQLRecordNotUniqueException("taki e-mail już jest zarejestrowany");
         }
         user.setRegistered(LocalDateTime.now());
@@ -38,29 +36,29 @@ class UserService {
         userRepo.save(getUserWithHashedPassword(user));
     }
 
-    public UserToken authorize(UserDTO user) throws HttpClientErrorException{
-            User userFromDB = userRepo.findByUsername(user.getUsername()); //todo dopisac user not found
+    public UserToken generateUserToken(UserDTO userFromClient) throws HttpClientErrorException {
+        User userFromDB = userRepo.findByUsername(userFromClient.getUsername()); //todo dopisac user not found
 
-        if(userFromDB==null){
+        if (userFromDB == null) {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN, "Niewłaściwa nazwa użytkownika lub hasło");
         }
-
-        if(BCrypt.checkpw(user.getPassword(),userFromDB.getPassword())){
-
-            userFromDB.setLogged(LocalDateTime.now());
-            userRepo.updateUserLoggedDateById(userFromDB.getLogged().toString(), userFromDB.getId());
-
-//            String hashedToken = getToken(userFromDB);
-            return new UserToken(String.valueOf(userFromDB.getId()), getToken(userFromDB));
-        } else {
-            throw new HttpClientErrorException(HttpStatus.FORBIDDEN, "Niewłaściwa nazwa użytkownika lub hasło");
-        }
+        logUser(userFromClient, userFromDB);
+        return new UserToken(String.valueOf(userFromDB.getId()), getToken(userFromDB));
 
     }
 
-    private String getToken(User user){
+    private void logUser(UserDTO user, User userFromDB) {
+        if (BCrypt.checkpw(user.getPassword(), userFromDB.getPassword())) {
+            userFromDB.setLogged(LocalDateTime.now());
+            userRepo.updateUserLoggedDateById(userFromDB.getLogged().toString(), userFromDB.getId());
+        } else {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN, "Niewłaściwa nazwa użytkownika lub hasło");
+        }
+    }
+
+    private String getToken(User user) {
         String toHash = String.valueOf(user.getId()).concat(user.getLogged().toString());
-        return BCrypt.hashpw(toHash,BCrypt.gensalt());
+        return BCrypt.hashpw(toHash, BCrypt.gensalt());
 
     }
 
@@ -71,11 +69,11 @@ class UserService {
         return user;
     }
 
-    private boolean isUsernameUnique(String username) {
+    private boolean ifUsernameExists(String username) {
         return userRepo.findByUsername(username) != null;
     }
 
-    private boolean isUserEmailUnique(String email) {
+    private boolean ifUserEmailExists(String email) {
         return userRepo.findByEmail(email) != null;
     }
 }

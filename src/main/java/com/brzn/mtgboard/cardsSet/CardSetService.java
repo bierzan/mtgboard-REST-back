@@ -14,6 +14,7 @@ import java.io.IOException;
 public class CardSetService {
 
     CardSetRepo cardSetRepo;
+    private String cardSetApi = "https://api.magicthegathering.io/v1/sets?";
 
     @Autowired
     public CardSetService(CardSetRepo cardSetRepo) {
@@ -29,9 +30,8 @@ public class CardSetService {
     }
 
     public CardSet getCardSetByNameFromAPI(String setName) throws IOException { //todo dorobic handler
-        String apiUrl = String.format("https://api.magicthegathering.io/v1/sets?name=%s", setName);
-        CardSet set = mapToCardSetListClassFromAPI(apiUrl).getSets().stream().findFirst().orElseThrow(IOException::new);
-        return set;
+        String apiUrl = String.format("%sname=%s", cardSetApi, setName);
+        return mapToCardSetListClassFromAPI(apiUrl).getSets().stream().findFirst().orElseThrow(IOException::new);
     }
 
     private CardSetList mapToCardSetListClassFromAPI(String apiUrl) throws IOException {

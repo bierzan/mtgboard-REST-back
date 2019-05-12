@@ -21,6 +21,7 @@ public class CardService {
     CardRepo cardRepo;
     CardSetRepo cardSetRepo;
     CardSetService cardSetService;
+    private String cardApi = "https://api.magicthegathering.io/v1/cards?";
 
     @Autowired
     public CardService(CardRepo cardRepo, CardSetRepo cardSetRepo, CardSetService cardSetService) {
@@ -39,8 +40,7 @@ public class CardService {
     }
 
     List<Card> getCardsFromExternalAPI(String name) throws IOException {
-
-        String apiUrl = String.format("https://api.magicthegathering.io/v1/cards?name=%s", name);
+        String apiUrl = String.format("%sname=%s",cardApi, name);
         CardList cardsFromAPI = mapToCardListClassFromAPI(apiUrl);
         return cardsFromAPI.getCards();
     }
@@ -51,7 +51,7 @@ public class CardService {
     }
 
     protected Card postCardByNameAndSetName(String cardName, String setName) throws IOException { //todo dorobic handler
-        String apiUrl = String.format("https://api.magicthegathering.io/v1/cards?name=%s&setName=%s", cardName, setName);
+        String apiUrl = String.format("%sname=%s&setName=%s",cardApi, cardName, setName);
         Card card = mapToCardListClassFromAPI(apiUrl).getCards().stream().findFirst().orElseThrow(IOException::new);
         setCardSetForCard(card);
         cardRepo.save(card);
@@ -72,13 +72,14 @@ public class CardService {
         List<Card> cardsFromAPI = getCardsFromExternalAPI(name).stream()
                 .filter(card->card.getName().equalsIgnoreCase(name))
                 .collect(Collectors.toList());
+
         if (cardsFromAPI.isEmpty()) {
             return cardsFromAPI;
         }
+
         List<Card> postedCards = new ArrayList<>();
 
         for (Card card : cardsFromAPI) {
-
             setCardSetForCard(card);
             cardRepo.save(card);
             postedCards.add(card);
