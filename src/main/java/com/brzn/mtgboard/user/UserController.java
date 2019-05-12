@@ -2,19 +2,18 @@ package com.brzn.mtgboard.user;
 
 import com.brzn.mtgboard.exceptionHandler.SQLRecordNotUniqueException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpCookie;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("/users")
@@ -28,12 +27,20 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody User user) throws SQLRecordNotUniqueException, URISyntaxException {
+    public ResponseEntity<UserToken> createUser(@Valid @RequestBody User user) throws SQLRecordNotUniqueException, URISyntaxException {
 
-            userService.saveUser(user);
-            return ResponseEntity.created(new URI("/users/" + user.getId())).build();
-        }
+        userService.saveUser(user);
+        return ResponseEntity.created(new URI("/users/" + user.getId()))
+                .build();
     }
+
+
+    @PostMapping("/login") //todo obsluga wyjatu
+    public ResponseEntity<UserToken> loginUser(@Valid @RequestBody UserDTO user) throws HttpClientErrorException {
+        UserToken token = userService.authorize(user);
+        return ResponseEntity.ok(token);
+    }
+}
 
 //    @PostMapping("/")
 //    public ResponseEntity<String> createUser(@Valid @RequestBody User user,
