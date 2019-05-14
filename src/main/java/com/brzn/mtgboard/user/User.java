@@ -1,5 +1,6 @@
 package com.brzn.mtgboard.user;
 
+import com.brzn.mtgboard.card.wanted.WantedCard;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -51,6 +54,11 @@ public class User {
     @Setter
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Getter
+    @Setter
+    @OneToMany(mappedBy = "user")
+    private List<WantedCard> wantedCards = new ArrayList<>();
 
     public User() {
     }

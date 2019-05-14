@@ -1,6 +1,7 @@
 package com.brzn.mtgboard.card;
 
 
+import com.brzn.mtgboard.card.wanted.WantedCard;
 import com.brzn.mtgboard.cardsSet.CardSet;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,6 +10,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "cards")
@@ -92,6 +95,11 @@ public class Card {
     @Getter
     @Setter
     private URL imageUrl;
+
+    @Getter
+    @Setter
+    @OneToMany(mappedBy = "card")
+    private List<WantedCard> wantedCards = new ArrayList<>();
 
     public Card() {
     }
