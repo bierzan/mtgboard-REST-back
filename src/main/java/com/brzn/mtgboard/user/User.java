@@ -60,6 +60,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<WantedCard> wantedCards = new ArrayList<>();
 
+    @Getter
+    @Setter
+    private String halfToken;
+
     public User() {
     }
 

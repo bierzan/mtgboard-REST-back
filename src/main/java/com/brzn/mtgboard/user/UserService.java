@@ -50,16 +50,20 @@ class UserService {
     private void logUser(UserDTO user, User userFromDB) {
         if (BCrypt.checkpw(user.getPassword(), userFromDB.getPassword())) {
             userFromDB.setLogged(LocalDateTime.now());
-            userRepo.updateUserLoggedDateById(userFromDB.getLogged().toString(), userFromDB.getId());
+            String a = String.valueOf(userFromDB.getId());
+            String b = String.valueOf(userFromDB.getLogged());
+            String hash = String.valueOf(a.concat(b).hashCode());
+            userFromDB.setHalfToken(hash);
+            userRepo.updateUserLoggedDateAndHalfTokenById(userFromDB.getLogged().toString(), hash, userFromDB.getId());
         } else {
             throw new HttpClientErrorException(HttpStatus.FORBIDDEN, "Niewłaściwa nazwa użytkownika lub hasło");
         }
     }
 
     private String getToken(User user) {
-        String toHash = String.valueOf(user.getId()).concat(user.getLogged().toString());
-        return BCrypt.hashpw(toHash, BCrypt.gensalt());
 
+        String hash = user.getHalfToken();
+        return BCrypt.hashpw(hash, BCrypt.gensalt());
     }
 
 
