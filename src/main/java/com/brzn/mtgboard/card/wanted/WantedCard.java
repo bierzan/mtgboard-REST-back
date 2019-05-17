@@ -2,6 +2,9 @@ package com.brzn.mtgboard.card.wanted;
 
 import com.brzn.mtgboard.card.Card;
 import com.brzn.mtgboard.user.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +14,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "wanted_cards")
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+@JsonDeserialize(using = WantedCardDeserializer.class)
 public class WantedCard {
 
     @Id
@@ -40,6 +46,8 @@ public class WantedCard {
     private String language;
 
     @Enumerated(EnumType.STRING)
+    @Getter
+    @Setter
     private Condition cardCondition;
 
     @Getter
@@ -72,5 +80,9 @@ public class WantedCard {
     private LocalDateTime updated;
 
     public WantedCard() {
+    }
+
+    protected void updateDate(){
+        this.updated = LocalDateTime.now();
     }
 }
