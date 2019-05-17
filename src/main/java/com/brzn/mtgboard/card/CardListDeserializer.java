@@ -17,9 +17,6 @@ import java.util.List;
 
 public class CardListDeserializer extends StdDeserializer<CardList> {
 
-    @Autowired
-    CardSetRepo cardSetRepo;
-
     public CardListDeserializer() {
         super(CardSet.class);
     }

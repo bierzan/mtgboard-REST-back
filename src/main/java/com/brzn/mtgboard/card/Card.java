@@ -106,3 +106,4 @@ public class Card {
 
 }
 
+//todo make languages field
