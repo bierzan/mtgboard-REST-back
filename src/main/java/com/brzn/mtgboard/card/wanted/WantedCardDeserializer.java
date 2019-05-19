@@ -4,6 +4,7 @@ import com.brzn.mtgboard.card.Card;
 import com.brzn.mtgboard.card.CardRepo;
 import com.brzn.mtgboard.cardsSet.CardSet;
 import com.brzn.mtgboard.cardsSet.CardSetRepo;
+import com.brzn.mtgboard.user.User;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -37,12 +38,9 @@ public class WantedCardDeserializer extends StdDeserializer<WantedCard> {
     }
 
     @Override
-    public WantedCard deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-//
-//        CardList cl = new CardList();
-//        List<Card> cards = new ArrayList<>();
+    public WantedCard deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+
         JsonNode json = jsonParser.getCodec().readTree(jsonParser);
-//        JsonNode jsonCards = jsonNode.get("cards");
 
         WantedCard wantedCard = new WantedCard();
         wantedCard.setQuantity(json.get("quantity").asInt());
@@ -53,6 +51,10 @@ public class WantedCardDeserializer extends StdDeserializer<WantedCard> {
         Card card = new Card();
         card.setId(json.get("cardId").asLong());
         wantedCard.setCard(card);
+
+        User user = new User();
+        user.setId(json.get("userId").asLong());
+        wantedCard.setUser(user);
 
         wantedCard.setCardCondition(Condition.valueOf(json.get("condition").asText()));
 

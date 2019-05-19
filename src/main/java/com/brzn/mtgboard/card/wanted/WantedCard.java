@@ -28,13 +28,11 @@ public class WantedCard {
     @ManyToOne
     @JoinColumn(name = "card_id")
     @Getter
-    @Setter
     private Card card;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @Getter
-    @Setter
     private User user;
 
     @Getter
@@ -84,5 +82,15 @@ public class WantedCard {
 
     protected void updateDate(){
         this.updated = LocalDateTime.now();
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
+        card.addWantedCard(this);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        user.addWantedCard(this);
     }
 }

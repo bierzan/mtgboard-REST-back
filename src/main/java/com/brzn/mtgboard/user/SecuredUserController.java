@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLDataException;
 
 @RestController
 @RequestMapping("/user")
@@ -31,7 +33,7 @@ public class SecuredUserController {
 
     @PostMapping("/cards")
     public ResponseEntity<Object> addWantedCard(@RequestBody WantedCard wantedCard,
-                                              ServletRequest request) throws URISyntaxException {
+                                              ServletRequest request) throws URISyntaxException, SQLDataException {
         if (securedUserService.checkUserToken(request)) {
             wantedCardService.saveCardOffer(wantedCard);
             return ResponseEntity.created(new URI("/user/cards/" + wantedCard.getId()))
@@ -39,6 +41,7 @@ public class SecuredUserController {
         }
         return ResponseEntity.badRequest()
                 .build();
+
         //todo zrobic metode
         // uruchamia sie obserwator sredniej ceny
         //  przelicza srednia cene danej karty (czysty sql) sprawdzic zaokraglenie i ewnetualnie test na mapowanie do bigdecimala

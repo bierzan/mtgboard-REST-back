@@ -55,8 +55,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Getter
-    @Setter
     @OneToMany(mappedBy = "user")
     private List<WantedCard> wantedCards = new ArrayList<>();
 
@@ -67,4 +65,15 @@ public class User {
     public User() {
     }
 
+    public List<WantedCard> getWantedCards() {
+        return wantedCards;
+    }
+
+    public void setWantedCards(List<WantedCard> wantedCards) {
+        this.wantedCards = wantedCards;
+    }
+
+    public void addWantedCard(WantedCard wantedCard){
+        this.wantedCards.add(wantedCard);
+    }
 }

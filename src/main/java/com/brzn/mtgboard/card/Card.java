@@ -104,6 +104,10 @@ public class Card {
     public Card() {
     }
 
+    public void addWantedCard(WantedCard wantedCard){
+        this.wantedCards.add(wantedCard);
+    }
+
 }
 
 //todo make languages field

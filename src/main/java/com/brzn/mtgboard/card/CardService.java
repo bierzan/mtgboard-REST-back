@@ -6,10 +6,12 @@ import com.brzn.mtgboard.cardsSet.CardSetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,5 +107,9 @@ public class CardService {
             return execution.execute(request, body);
         });
         return restTemplate;
+    }
+
+    public Card getCardById(long id)throws SQLDataException{
+        return cardRepo.findById(id).orElseThrow(SQLDataException::new);
     }
 }

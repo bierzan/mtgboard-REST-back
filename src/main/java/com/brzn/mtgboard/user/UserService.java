@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import javax.transaction.Transactional;
+import java.sql.SQLDataException;
 import java.time.LocalDateTime;
 
 @Service
 @Transactional
-class UserService {
+public class UserService {
 
     private UserRepo userRepo;
 
@@ -79,5 +80,9 @@ class UserService {
 
     private boolean ifUserEmailExists(String email) {
         return userRepo.findByEmail(email) != null;
+    }
+
+    public User getUserById(long id) throws SQLDataException{
+        return userRepo.findById(id).orElseThrow(SQLDataException::new);
     }
 }
