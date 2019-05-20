@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "card")
+@Table(name = "wanted_history")
 public class WantedCardPriceHistory {
 
     @Id
@@ -32,6 +32,17 @@ public class WantedCardPriceHistory {
     @Setter
     private BigDecimal avgPrice;
 
+    @Getter
+    @Setter
+    private boolean isFoiled;
+
     public WantedCardPriceHistory() {
+    }
+
+    public WantedCardPriceHistory(Card card, BigDecimal avgPrice, boolean isFoiled) {
+        this.card = card;
+        this.avgPrice = avgPrice;
+        this.date = LocalDate.now();
+        this.isFoiled = isFoiled;
     }
 }

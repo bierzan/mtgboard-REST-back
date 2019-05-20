@@ -12,6 +12,8 @@ import java.util.List;
 public interface WantedCardRepo extends JpaRepository<WantedCard, Long> {
 
     @Query(value = "SELECT * FROM wanted_cards where card_id = ?1", nativeQuery = true)
+    List<WantedCard> findAllByCardId(long cardId);
+
     WantedCard findOneByCardId(long id);
 
     @Query(value = "SELECT * FROM wanted_cards where card_id = ?1 AND user_id = ?2", nativeQuery = true)

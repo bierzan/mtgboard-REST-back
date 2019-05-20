@@ -8,25 +8,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLDataException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
 public class WantedCardService {
 
     private WantedCardRepo wantedCardRepo;
-    private WantedCardPriceHistoryRepo wantedCardPriceHistoryRepo;
+    private WantedCardPriceHistoryService wcPriceHistoryService;
     private CardService cardService;
     private UserService userService;
 
     @Autowired
-    public WantedCardService(WantedCardRepo wantedCardRepo, WantedCardPriceHistoryRepo wantedCardPriceHistoryRepo, CardService cardService, UserService userService) {
+    public WantedCardService(WantedCardRepo wantedCardRepo, WantedCardPriceHistoryService wcPriceHistoryService, CardService cardService, UserService userService) {
         this.wantedCardRepo = wantedCardRepo;
-        this.wantedCardPriceHistoryRepo = wantedCardPriceHistoryRepo;
+        this.wcPriceHistoryService = wcPriceHistoryService;
         this.cardService = cardService;
         this.userService = userService;
     }
+
 
     public void saveCardOffer(WantedCard wantedCard) throws SQLDataException {
 
@@ -34,10 +38,12 @@ public class WantedCardService {
 
         if (existingWantedCard != null) {
             updateOfferQuantity(existingWantedCard, wantedCard);
+            updateAvgCardPrice(wantedCard);
         } else {
             wantedCard.setCreated(LocalDateTime.now());
             setUserAndCard(wantedCard);
             wantedCardRepo.save(wantedCard);
+            updateAvgCardPrice(wantedCard);
         }
     }
 
@@ -82,6 +88,22 @@ public class WantedCardService {
         User userToSet = userService.getUserById(wantedCard.getUser().getId());
         wantedCard.setUser(userToSet);
         wantedCard.setCard(cardToSet);
+    }
 
+    void updateAvgCardPrice(WantedCard wantedCard){
+        Card card = wantedCard.getCard();
+        WantedCardPriceHistory wcHistory = new WantedCardPriceHistory(card, getCardsAvgPrice(card), wantedCard.isFoiled());
+        wcPriceHistoryService.updatedAvgPrice(wcHistory);
+    }
+
+    private BigDecimal getCardsAvgPrice(Card card) {
+        List<WantedCard> cards = wantedCardRepo.findAllByCardId(card.getId());
+        int totalQuantity = 0;
+        BigDecimal sumOfPrices = new BigDecimal(0);
+        for(WantedCard wc: cards){
+            totalQuantity+=wc.getQuantity();
+            sumOfPrices = sumOfPrices.add(wc.getPrice().multiply(new BigDecimal(wc.getQuantity())));
+        }
+        return sumOfPrices.divide(new BigDecimal(totalQuantity),2, RoundingMode.HALF_DOWN);
     }
 }

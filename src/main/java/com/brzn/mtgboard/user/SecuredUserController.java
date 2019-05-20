@@ -42,13 +42,6 @@ public class SecuredUserController {
         return ResponseEntity.badRequest()
                 .build();
 
-        //todo zrobic metode
-        // uruchamia sie obserwator sredniej ceny
-        //  przelicza srednia cene danej karty (czysty sql) sprawdzic zaokraglenie i ewnetualnie test na mapowanie do bigdecimala
-        //  obiekt cardpricehistory z dzisiejsza data
-        // jak nowy dzien to dodaje jak kolejna karta tego samego dnia to aktualizuje ten dzien - porownywanie dni a nie timestampow
-
-
     }
 
 }
