@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.card.wanted;
+package com.brzn.mtgboard.card.offer;
 
 public enum Condition {
     M("Mint"),

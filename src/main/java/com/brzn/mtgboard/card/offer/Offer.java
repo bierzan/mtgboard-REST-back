@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.card.wanted;
+package com.brzn.mtgboard.card.offer;
 
 import com.brzn.mtgboard.card.Card;
 import com.brzn.mtgboard.user.User;
@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @Table(name = "wanted_cards")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
-@JsonDeserialize(using = WantedCardDeserializer.class)
-public class WantedCard {
+@JsonDeserialize(using = OfferDeserializer.class)
+public class Offer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,7 +77,7 @@ public class WantedCard {
     @Setter
     private LocalDateTime updated;
 
-    public WantedCard() {
+    public Offer() {
     }
 
     protected void updateDate(){

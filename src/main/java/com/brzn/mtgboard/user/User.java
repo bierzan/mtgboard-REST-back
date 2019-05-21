@@ -1,6 +1,6 @@
 package com.brzn.mtgboard.user;
 
-import com.brzn.mtgboard.card.wanted.WantedCard;
+import com.brzn.mtgboard.card.offer.Offer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -56,7 +56,7 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    private List<WantedCard> wantedCards = new ArrayList<>();
+    private List<Offer> offers = new ArrayList<>();
 
     @Getter
     @Setter
@@ -65,15 +65,15 @@ public class User {
     public User() {
     }
 
-    public List<WantedCard> getWantedCards() {
-        return wantedCards;
+    public List<Offer> getOffers() {
+        return offers;
     }
 
-    public void setWantedCards(List<WantedCard> wantedCards) {
-        this.wantedCards = wantedCards;
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
     }
 
-    public void addWantedCard(WantedCard wantedCard){
-        this.wantedCards.add(wantedCard);
+    public void addWantedCard(Offer offer){
+        this.offers.add(offer);
     }
 }

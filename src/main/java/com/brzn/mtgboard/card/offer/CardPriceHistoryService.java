@@ -1,25 +1,24 @@
-package com.brzn.mtgboard.card.wanted;
+package com.brzn.mtgboard.card.offer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Service
 @Transactional
-public class WantedCardPriceHistoryService {
+public class CardPriceHistoryService {
 
-    private WantedCardPriceHistoryRepo priceHistoryRepo;
+    private CardPriceHistoryRepo priceHistoryRepo;
 
     @Autowired
-    public WantedCardPriceHistoryService(WantedCardPriceHistoryRepo priceHistoryRepo) {
+    public CardPriceHistoryService(CardPriceHistoryRepo priceHistoryRepo) {
         this.priceHistoryRepo = priceHistoryRepo;
     }
 
-    void updatedAvgPrice(WantedCardPriceHistory priceHistory){
-        WantedCardPriceHistory priceHistoryFromDB = priceHistoryRepo.findOneByCardAndFoiledAndDate(priceHistory.getCard().getId()
+    void updatedAvgPrice(CardPriceHistory priceHistory){
+        CardPriceHistory priceHistoryFromDB = priceHistoryRepo.findOneByCardAndFoiledAndDate(priceHistory.getCard().getId()
                 , priceHistory.isFoiled()
                 , LocalDate.now().toString());
         if(priceHistoryFromDB!=null){

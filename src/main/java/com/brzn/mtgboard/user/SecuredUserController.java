@@ -1,7 +1,7 @@
 package com.brzn.mtgboard.user;
 
-import com.brzn.mtgboard.card.wanted.WantedCard;
-import com.brzn.mtgboard.card.wanted.WantedCardService;
+import com.brzn.mtgboard.card.offer.Offer;
+import com.brzn.mtgboard.card.offer.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLDataException;
@@ -22,21 +20,21 @@ public class SecuredUserController {
 
     private UserService userService;
     private SecuredUserService securedUserService;
-    private WantedCardService wantedCardService;
+    private OfferService offerService;
 
     @Autowired
-    public SecuredUserController(UserService userService, SecuredUserService securedUserService, WantedCardService wantedCardService) {
+    public SecuredUserController(UserService userService, SecuredUserService securedUserService, OfferService offerService) {
         this.userService = userService;
         this.securedUserService = securedUserService;
-        this.wantedCardService = wantedCardService;
+        this.offerService = offerService;
     }
 
     @PostMapping("/cards")
-    public ResponseEntity<Object> addWantedCard(@RequestBody WantedCard wantedCard,
+    public ResponseEntity<Object> addWantedCard(@RequestBody Offer offer,
                                               ServletRequest request) throws URISyntaxException, SQLDataException {
         if (securedUserService.checkUserToken(request)) {
-            wantedCardService.saveCardOffer(wantedCard);
-            return ResponseEntity.created(new URI("/user/cards/" + wantedCard.getId()))
+            offerService.saveCardOffer(offer);
+            return ResponseEntity.created(new URI("/user/cards/" + offer.getId()))
                     .build();
         }
         return ResponseEntity.badRequest()

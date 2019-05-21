@@ -1,7 +1,7 @@
 package com.brzn.mtgboard.card;
 
 
-import com.brzn.mtgboard.card.wanted.WantedCard;
+import com.brzn.mtgboard.card.offer.Offer;
 import com.brzn.mtgboard.cardsSet.CardSet;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -99,7 +99,7 @@ public class Card {
     @Getter
     @Setter
     @OneToMany(mappedBy = "card")
-    private List<WantedCard> wantedCards = new ArrayList<>();
+    private List<Offer> offers = new ArrayList<>();
 
     @Getter
     @Setter
@@ -108,8 +108,8 @@ public class Card {
     public Card() {
     }
 
-    public void addWantedCard(WantedCard wantedCard){
-        this.wantedCards.add(wantedCard);
+    public void addWantedCard(Offer offer){
+        this.offers.add(offer);
     }
 
 }

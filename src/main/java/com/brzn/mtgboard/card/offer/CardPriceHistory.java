@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.card.wanted;
+package com.brzn.mtgboard.card.offer;
 
 import com.brzn.mtgboard.card.Card;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "wanted_history")
-public class WantedCardPriceHistory {
+public class CardPriceHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +36,10 @@ public class WantedCardPriceHistory {
     @Setter
     private boolean isFoiled;
 
-    public WantedCardPriceHistory() {
+    public CardPriceHistory() {
     }
 
-    public WantedCardPriceHistory(Card card, BigDecimal avgPrice, boolean isFoiled) {
+    public CardPriceHistory(Card card, BigDecimal avgPrice, boolean isFoiled) {
         this.card = card;
         this.avgPrice = avgPrice;
         this.date = LocalDate.now();
