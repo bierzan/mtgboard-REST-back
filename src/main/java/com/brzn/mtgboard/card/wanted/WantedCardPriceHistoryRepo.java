@@ -19,6 +19,4 @@ public interface WantedCardPriceHistoryRepo extends JpaRepository<WantedCardPric
     @Query(value = "UPDATE wanted_history SET avg_price=?1 WHERE id = ?2", nativeQuery = true)
     void updateAvgPriceById (BigDecimal avgPrice, long id);
 
-    //todo osobna kategoria na ceny foilowane
-
 }

@@ -47,7 +47,7 @@ public class WantedCardService {
         }
     }
 
-    private WantedCard findExistingOffer(WantedCard wantedCard) throws SQLDataException {
+    private WantedCard findExistingOffer(WantedCard wantedCard) {
         return wantedCardRepo.findEqualOffer(wantedCard.getLanguage(),
                 wantedCard.getCardCondition().toString(),
                 wantedCard.isAltered(),
@@ -66,7 +66,7 @@ public class WantedCardService {
         updateEntityRecord(existingWantedCard);
     }
 
-    protected void updateEntityRecord(WantedCard wantedCard) {
+    private void updateEntityRecord(WantedCard wantedCard) {
         wantedCard.updateDate();
         wantedCardRepo.updateOfferByCardId(
                 wantedCard.getCardCondition().toString(),
@@ -83,14 +83,14 @@ public class WantedCardService {
     }
     //todo protected na metodach i testy wszystkiego!
 
-    void setUserAndCard(WantedCard wantedCard) throws SQLDataException {
+    private void setUserAndCard(WantedCard wantedCard) throws SQLDataException {
         Card cardToSet = cardService.getCardById(wantedCard.getCard().getId());
         User userToSet = userService.getUserById(wantedCard.getUser().getId());
         wantedCard.setUser(userToSet);
         wantedCard.setCard(cardToSet);
     }
 
-    void updateAvgCardPrice(WantedCard wantedCard){
+    private void updateAvgCardPrice(WantedCard wantedCard) {
         Card card = wantedCard.getCard();
         WantedCardPriceHistory wcHistory = new WantedCardPriceHistory(card, getCardsAvgPrice(card), wantedCard.isFoiled());
         wcPriceHistoryService.updatedAvgPrice(wcHistory);
@@ -100,10 +100,10 @@ public class WantedCardService {
         List<WantedCard> cards = wantedCardRepo.findAllByCardId(card.getId());
         int totalQuantity = 0;
         BigDecimal sumOfPrices = new BigDecimal(0);
-        for(WantedCard wc: cards){
-            totalQuantity+=wc.getQuantity();
+        for (WantedCard wc : cards) {
+            totalQuantity += wc.getQuantity();
             sumOfPrices = sumOfPrices.add(wc.getPrice().multiply(new BigDecimal(wc.getQuantity())));
         }
-        return sumOfPrices.divide(new BigDecimal(totalQuantity),2, RoundingMode.HALF_DOWN);
+        return sumOfPrices.divide(new BigDecimal(totalQuantity), 2, RoundingMode.HALF_DOWN);
     }
 }

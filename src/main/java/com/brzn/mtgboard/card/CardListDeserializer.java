@@ -84,6 +84,19 @@ public class CardListDeserializer extends StdDeserializer<CardList> {
             if (node.hasNonNull("multiverseid")) card.setMultiverseId(node.get("multiverseid").asLong());
             if (node.hasNonNull("imageUrl")) card.setImageUrl(new URL(node.get("imageUrl").asText()));
 
+            if (node.get("foreignNames").size() > 0) {
+                StringBuilder langs = new StringBuilder();
+                langs.append("English, ");
+                for (JsonNode langNode : node.get("foreignNames")) {
+                    langs.append(langNode.get("language").asText());
+                    langs.append(", ");
+                }
+                String languages = langs.toString();
+                card.setLanguages(languages.substring(0, languages.length() - 2));
+            } else{
+                card.setLanguages("English");
+            }
+
             cards.add(card);
         }
 

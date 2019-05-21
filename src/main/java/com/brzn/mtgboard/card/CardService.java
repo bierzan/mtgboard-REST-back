@@ -52,7 +52,7 @@ public class CardService {
 
     }
 
-    protected Card postCardByNameAndSetName(String cardName, String setName) throws IOException { //todo dorobic handler
+    protected Card postCardByNameAndSetName(String cardName, String setName) throws IOException {
         String apiUrl = String.format("%sname=%s&setName=%s",cardApi, cardName, setName);
         Card card = mapToCardListClassFromAPI(apiUrl).getCards().stream().findFirst().orElseThrow(IOException::new);
         setCardSetForCard(card);

@@ -101,6 +101,10 @@ public class Card {
     @OneToMany(mappedBy = "card")
     private List<WantedCard> wantedCards = new ArrayList<>();
 
+    @Getter
+    @Setter
+    private String languages;
+
     public Card() {
     }
 

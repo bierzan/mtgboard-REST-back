@@ -29,7 +29,7 @@ public class CardSetService {
         return cardSetRepo.findByName(name);
     }
 
-    public CardSet getCardSetByNameFromAPI(String setName) throws IOException { //todo dorobic handler
+    public CardSet getCardSetByNameFromAPI(String setName) throws IOException {
         String apiUrl = String.format("%sname=%s", cardSetApi, setName);
         return mapToCardSetListClassFromAPI(apiUrl).getSets().stream().findFirst().orElseThrow(IOException::new);
     }
