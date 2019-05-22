@@ -30,8 +30,8 @@ public class SecuredUserController {
     }
 
     @PostMapping("/cards")
-    public ResponseEntity<Object> addWantedCard(@RequestBody Offer offer,
-                                              ServletRequest request) throws URISyntaxException, SQLDataException {
+    public ResponseEntity<Object> addCardOffer(@RequestBody Offer offer,
+                                               ServletRequest request) throws URISyntaxException, SQLDataException {
         if (securedUserService.checkUserToken(request)) {
             offerService.saveCardOffer(offer);
             return ResponseEntity.created(new URI("/user/cards/" + offer.getId()))

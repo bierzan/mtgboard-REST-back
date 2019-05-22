@@ -11,15 +11,15 @@ import java.util.List;
 @Repository
 public interface OfferRepo extends JpaRepository<Offer, Long> {
 
-    @Query(value = "SELECT * FROM wanted_cards where card_id = ?1", nativeQuery = true)
-    List<Offer> findAllByCardId(long cardId);
+    @Query(value = "SELECT * FROM offers where card_id = ?1 AND offer_type= ?2 AND is_foiled = ?3", nativeQuery = true)
+    List<Offer> findAllByCardIdAndOfferTypeAndFoiled(long cardId, OfferType type, boolean isFoiled);
 
     Offer findOneByCardId(long id);
 
-    @Query(value = "SELECT * FROM wanted_cards where card_id = ?1 AND user_id = ?2", nativeQuery = true)
+    @Query(value = "SELECT * FROM offers where card_id = ?1 AND user_id = ?2", nativeQuery = true)
     List<Offer> findAllByCardIdAndUserId(long cardId, long userId);
 
-    @Query(value = "SELECT * FROM wanted_cards\n" +
+    @Query(value = "SELECT * FROM offers\n" +
             "WHERE " +
             "language = ?1 AND " +
             "card_condition = ?2 AND " +
@@ -28,12 +28,13 @@ public interface OfferRepo extends JpaRepository<Offer, Long> {
             "is_signed = ?5 AND " +
             "user_id = ?6 AND " +
             "card_id = ?7 AND " +
-            "price = ?8 " +
+            "price = ?8 AND " +
+            "offer_type = ?9 " +
             "limit 1", nativeQuery = true)
-    Offer findEqualOffer(String lang, String cond, boolean altered, boolean foiled, boolean signed, long userId, long cardId, BigDecimal price);
+    Offer findEqualOffer(String lang, String cond, boolean altered, boolean foiled, boolean signed, long userId, long cardId, BigDecimal price, String offerType);
 
     @Modifying
-    @Query(value = "UPDATE wanted_cards SET " +
+    @Query(value = "UPDATE offers SET " +
             "card_condition=?1, " +
             "language=?2, " +
             "quantity=?3, " +

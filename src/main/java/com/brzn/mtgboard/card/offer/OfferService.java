@@ -38,13 +38,14 @@ public class OfferService {
 
         if (existingOffer != null) {
             updateOfferQuantity(existingOffer, offer);
-            updateAvgCardPrice(offer);
         } else {
             offer.setCreated(LocalDateTime.now());
             setUserAndCard(offer);
             offerRepo.save(offer);
-            updateAvgCardPrice(offer);
+
         }
+
+        updateAvgCardPrice(offer);
     }
 
     private Offer findExistingOffer(Offer offer) {
@@ -55,7 +56,8 @@ public class OfferService {
                 offer.isSigned(),
                 offer.getUser().getId(),
                 offer.getCard().getId(),
-                offer.getPrice());
+                offer.getPrice(),
+                offer.getOfferType().toString());
     }
 
     private void updateOfferQuantity(Offer existingOffer, Offer offer) {
@@ -92,18 +94,22 @@ public class OfferService {
 
     private void updateAvgCardPrice(Offer offer) {
         Card card = offer.getCard();
-        CardPriceHistory wcHistory = new CardPriceHistory(card, getCardsAvgPrice(card), offer.isFoiled());
-        wcPriceHistoryService.updatedAvgPrice(wcHistory);
+        CardPriceHistory priceHistory = new CardPriceHistory(card, getCardsAvgPrice(card, offer), offer.isFoiled(), offer.getOfferType());
+        wcPriceHistoryService.updatedAvgPrice(priceHistory);
     }
 
-    private BigDecimal getCardsAvgPrice(Card card) {
-        List<Offer> cards = offerRepo.findAllByCardId(card.getId());
+    private BigDecimal getCardsAvgPrice(Card card, Offer offer) {
+        List<Offer> offers = offerRepo.findAllByCardIdAndOfferTypeAndFoiled(card.getId(), offer.getOfferType(), offer.isFoiled());
         int totalQuantity = 0;
         BigDecimal sumOfPrices = new BigDecimal(0);
-        for (Offer wc : cards) {
-            totalQuantity += wc.getQuantity();
-            sumOfPrices = sumOfPrices.add(wc.getPrice().multiply(new BigDecimal(wc.getQuantity())));
+        for (Offer o : offers) {
+            totalQuantity += o.getQuantity();
+            sumOfPrices = sumOfPrices.add(o.getPrice().multiply(new BigDecimal(o.getQuantity())));
         }
+        if (totalQuantity == 0) {
+            return offer.getPrice();
+        }
+
         return sumOfPrices.divide(new BigDecimal(totalQuantity), 2, RoundingMode.HALF_DOWN);
     }
 }

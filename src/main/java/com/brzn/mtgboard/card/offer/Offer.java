@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "wanted_cards")
+@Table(name = "offers")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
 @JsonDeserialize(using = OfferDeserializer.class)
@@ -77,10 +77,15 @@ public class Offer {
     @Setter
     private LocalDateTime updated;
 
+    @Getter
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private OfferType offerType;
+
     public Offer() {
     }
 
-    protected void updateDate(){
+    protected void updateDate() {
         this.updated = LocalDateTime.now();
     }
 

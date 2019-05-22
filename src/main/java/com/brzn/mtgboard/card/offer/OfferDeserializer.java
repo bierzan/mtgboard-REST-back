@@ -55,6 +55,12 @@ public class OfferDeserializer extends StdDeserializer<Offer> {
         offer.setLanguage(json.get("language").asText());
         offer.setPrice(new BigDecimal(json.get("price").asDouble()));
 
+        if (json.get("wantedCard").asBoolean()) {
+            offer.setOfferType(OfferType.WANT);
+        } else {
+            offer.setOfferType(OfferType.SELL);
+        }
+
         return offer;
 
     }

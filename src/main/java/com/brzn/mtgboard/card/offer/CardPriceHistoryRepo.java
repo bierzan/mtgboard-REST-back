@@ -10,11 +10,11 @@ import java.math.BigDecimal;
 @Repository
 public interface CardPriceHistoryRepo extends JpaRepository<CardPriceHistory, Long> {
 
-    @Query(value = "SELECT * FROM wanted_history WHERE card_id = ?1 AND is_foiled = ?2 AND date = ?3", nativeQuery = true)
-    CardPriceHistory findOneByCardAndFoiledAndDate(long id, boolean foiled, String date);
+    @Query(value = "SELECT * FROM prices_history WHERE card_id = ?1 AND is_foiled = ?2 AND date = ?3 AND offer_type=?4", nativeQuery = true)
+    CardPriceHistory findOneByCardAndFoiledAndDateAndOfferType(long id, boolean foiled, String date, String offerType);
 
     @Modifying
-    @Query(value = "UPDATE wanted_history SET avg_price=?1 WHERE id = ?2", nativeQuery = true)
-    void updateAvgPriceById (BigDecimal avgPrice, long id);
+    @Query(value = "UPDATE prices_history SET avg_price=?1 WHERE id = ?2", nativeQuery = true)
+    void updateAvgPriceById(BigDecimal avgPrice, long id);
 
 }

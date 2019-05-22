@@ -17,11 +17,12 @@ public class CardPriceHistoryService {
         this.priceHistoryRepo = priceHistoryRepo;
     }
 
-    void updatedAvgPrice(CardPriceHistory priceHistory){
-        CardPriceHistory priceHistoryFromDB = priceHistoryRepo.findOneByCardAndFoiledAndDate(priceHistory.getCard().getId()
+    void updatedAvgPrice(CardPriceHistory priceHistory) {
+        CardPriceHistory priceHistoryFromDB = priceHistoryRepo.findOneByCardAndFoiledAndDateAndOfferType(priceHistory.getCard().getId()
                 , priceHistory.isFoiled()
-                , LocalDate.now().toString());
-        if(priceHistoryFromDB!=null){
+                , LocalDate.now().toString()
+                , priceHistory.getOfferType().toString());
+        if (priceHistoryFromDB != null) {
             priceHistoryRepo.updateAvgPriceById(priceHistory.getAvgPrice(), priceHistoryFromDB.getId());
         } else {
             priceHistoryRepo.save(priceHistory);
