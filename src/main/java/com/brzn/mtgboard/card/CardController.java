@@ -24,18 +24,18 @@ class CardController {
     }
 
     @GetMapping("/name/like/{name}")
-    ResponseEntity<List<Card>> getCardByPartialName(@PathVariable("name") String name)throws IOException{
-        List<Card> cards = cardService.findAllByPartialName(name);
+    ResponseEntity<List<CardForSearchResult>> getCardByPartialName(@PathVariable("name") String name)throws IOException{
+        List<CardForSearchResult> cards = cardService.findAllByPartialName(name);
         if (cards.size() == 0) {
-            cards = cardService.getCardsFromExternalAPI(name);
+            cards = cardService.findAllByPartialNameFromApi(name);
         }
         return ResponseEntity.ok(cards);
     }
 
     @GetMapping("/name/set/{name}/{setName}")
-    ResponseEntity<Card> getCardByNameAndSetName(@PathVariable ("name") String name,
+    ResponseEntity<CardForCardPage> getCardByNameAndSetName(@PathVariable ("name") String name,
                                                  @PathVariable ("setName") String setName){
-        Card card = cardService.getCardByNameAndSetName(name, setName);
+        CardForCardPage card = cardService.getCardByNameAndSetName(name, setName);
         if(card==null){
             return ResponseEntity.notFound().build();
         }
@@ -43,9 +43,9 @@ class CardController {
     }
 
     @PostMapping("/name/set/{name}/{setName}")
-    ResponseEntity<Card> postCardByNameAndSetName(@PathVariable ("name") String name,
+    ResponseEntity<CardForCardPage> postCardByNameAndSetName(@PathVariable ("name") String name,
                                                  @PathVariable ("setName") String setName) throws IOException{
-        Card card = cardService.postCardByNameAndSetName(name, setName);
+        CardForCardPage card = cardService.postCardByNameAndSetName(name, setName);
         if(card==null){
             return ResponseEntity.notFound().build();
         }

@@ -42,10 +42,13 @@ public class OfferService {
             offer.setCreated(LocalDateTime.now());
             setUserAndCard(offer);
             offerRepo.save(offer);
-
         }
 
         updateAvgCardPrice(offer);
+    }
+
+    public List<OfferWithCardNameAndUsername> findAllByCardId(long cardId){
+        return offerRepo.findAllByCardId(cardId);
     }
 
     private Offer findExistingOffer(Offer offer) {

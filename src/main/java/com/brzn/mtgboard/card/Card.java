@@ -98,7 +98,7 @@ public class Card {
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "card", fetch = FetchType.LAZY)
     private List<Offer> offers = new ArrayList<>();
 
     @Getter
@@ -113,5 +113,3 @@ public class Card {
     }
 
 }
-
-//todo make languages field

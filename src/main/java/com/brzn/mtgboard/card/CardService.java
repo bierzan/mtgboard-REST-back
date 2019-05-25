@@ -36,9 +36,13 @@ public class CardService {
         cardRepo.save(card);
     }
 
-    List<Card> findAllByPartialName(String name) throws IOException {
+    List<CardForSearchResult> findAllByPartialName(String name) throws IOException {
+        return cardRepo.findAllByPartialNameForSearchResult(name);
+    }
 
-        return cardRepo.findAllByPartialName(name);
+    List<CardForSearchResult> findAllByPartialNameFromApi(String name)throws  IOException{
+        List<Card> cards = getCardsFromExternalAPI(name);
+        return cards.stream().map(x-> new CardForSearchResult(x.getName(), x.getSet().getName())).collect(Collectors.toList());
     }
 
     List<Card> getCardsFromExternalAPI(String name) throws IOException {
@@ -47,17 +51,17 @@ public class CardService {
         return cardsFromAPI.getCards();
     }
 
-    Card getCardByNameAndSetName(String cardName, String setName) {
+    CardForCardPage getCardByNameAndSetName(String cardName, String setName) {
         return cardRepo.findByNameAndSetName(cardName, setName);
 
     }
 
-    protected Card postCardByNameAndSetName(String cardName, String setName) throws IOException {
+    protected CardForCardPage postCardByNameAndSetName(String cardName, String setName) throws IOException {
         String apiUrl = String.format("%sname=%s&setName=%s",cardApi, cardName, setName);
         Card card = mapToCardListClassFromAPI(apiUrl).getCards().stream().findFirst().orElseThrow(IOException::new);
         setCardSetForCard(card);
         cardRepo.save(card);
-        return card;
+        return new CardForCardPage(card);
     }
 
     private void setCardSetForCard(Card card) throws IOException {
@@ -111,5 +115,9 @@ public class CardService {
 
     public Card getCardById(long id)throws SQLDataException{
         return cardRepo.findById(id).orElseThrow(SQLDataException::new);
+    }
+
+    private CardForSearchResult mapToSearchByNameResult(Card card){
+        return new CardForSearchResult(card.getName(), card.getSet().getName());
     }
 }
