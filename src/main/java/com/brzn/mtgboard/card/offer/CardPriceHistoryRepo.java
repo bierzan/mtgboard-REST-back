@@ -28,12 +28,12 @@ public interface CardPriceHistoryRepo extends JpaRepository<CardPriceHistory, Lo
     @Query(value = "SELECT new com.brzn.mtgboard.card.offer.transfer.CardAvgPriceWithDate(" +
             "cph.date, cph.avgPrice) FROM CardPriceHistory cph " +
             "JOIN cph.card c " +
-            "WHERE c.id=?1 AND cph.offerType='WANT' AND cph.isFoiled='false'")
+            "WHERE c.id=?1 AND cph.offerType='WANT' AND cph.isFoiled='false' ORDER BY cph.date ASC")
     List<CardAvgPriceWithDate> findAllWantNonFoiledByCardId(long cardId);
 
     @Query(value = "SELECT new com.brzn.mtgboard.card.offer.transfer.CardAvgPriceWithDate(" +
             "cph.date, cph.avgPrice) FROM CardPriceHistory cph " +
             "JOIN cph.card c " +
-            "WHERE c.id=?1 AND cph.offerType='SELL' AND cph.isFoiled='false'")
+            "WHERE c.id=?1 AND cph.offerType='SELL' AND cph.isFoiled='false' ORDER BY cph.date ASC ")
     List<CardAvgPriceWithDate> findAllSellNonFoiledByCardId(long cardId);
 }
