@@ -1,5 +1,9 @@
 package com.brzn.mtgboard.card.offer;
 
+import com.brzn.mtgboard.card.offer.transfer.CardAvgPriceWithDate;
+import com.brzn.mtgboard.card.offer.transfer.CardAvgPricesHistoryByType;
+import com.brzn.mtgboard.card.offer.transfer.OfferWithCardNameAndUsername;
+import com.brzn.mtgboard.card.offer.transfer.OffersStatisticsByCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +19,28 @@ import java.util.List;
 public class OfferController {
 
     private OfferService offerService;
+    private CardPriceHistoryService historyService;
 
     @Autowired
-    public OfferController(OfferService offerService) {
+    public OfferController(OfferService offerService, CardPriceHistoryService historyService) {
         this.offerService = offerService;
+        this.historyService = historyService;
     }
 
     @GetMapping("/{cardId}")
     ResponseEntity<List<OfferWithCardNameAndUsername>> getOffersByMultiversedId(@PathVariable("cardId") long cardId)throws IOException {
         List<OfferWithCardNameAndUsername> offers = offerService.findAllByCardId(cardId);
         return ResponseEntity.ok(offers);
+    }
+
+    @GetMapping("/prices/{cardId}")
+    ResponseEntity <OffersStatisticsByCard> getPricesStatisticsByCardId(@PathVariable("cardId") long cardId){
+        OffersStatisticsByCard statisticsByCards = offerService.getOfferStatisticsByCardId(cardId);
+        return ResponseEntity.ok(statisticsByCards);
+    }
+
+    @GetMapping("/history/{cardId}")
+    ResponseEntity<CardAvgPricesHistoryByType> getOffersHistoryByCardId(@PathVariable("cardId") long cardId){
+        return ResponseEntity.ok(historyService.getPricesHistoryByCardIdSorted(cardId));
     }
 }

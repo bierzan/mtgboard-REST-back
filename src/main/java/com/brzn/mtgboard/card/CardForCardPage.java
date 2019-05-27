@@ -1,17 +1,12 @@
 package com.brzn.mtgboard.card;
 
 
-import com.brzn.mtgboard.card.offer.Offer;
-import com.brzn.mtgboard.cardsSet.CardSet;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -118,7 +113,7 @@ public class CardForCardPage {
         this.languages = languages;
     }
 
-    public CardForCardPage(Card card){
+    public CardForCardPage(Card card) {
         this.id = card.getId();
         this.name = card.getName();
         this.names = card.getNames();

@@ -2,6 +2,9 @@ package com.brzn.mtgboard.card.offer;
 
 import com.brzn.mtgboard.card.Card;
 import com.brzn.mtgboard.card.CardService;
+import com.brzn.mtgboard.card.offer.transfer.OfferWithCardId;
+import com.brzn.mtgboard.card.offer.transfer.OfferWithCardNameAndUsername;
+import com.brzn.mtgboard.card.offer.transfer.OffersStatisticsByCard;
 import com.brzn.mtgboard.user.User;
 import com.brzn.mtgboard.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLDataException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -19,14 +24,14 @@ import java.util.List;
 public class OfferService {
 
     private OfferRepo offerRepo;
-    private CardPriceHistoryService wcPriceHistoryService;
+    private CardPriceHistoryService priceHistoryService;
     private CardService cardService;
     private UserService userService;
 
     @Autowired
-    public OfferService(OfferRepo offerRepo, CardPriceHistoryService wcPriceHistoryService, CardService cardService, UserService userService) {
+    public OfferService(OfferRepo offerRepo, CardPriceHistoryService priceHistoryService, CardService cardService, UserService userService) {
         this.offerRepo = offerRepo;
-        this.wcPriceHistoryService = wcPriceHistoryService;
+        this.priceHistoryService = priceHistoryService;
         this.cardService = cardService;
         this.userService = userService;
     }
@@ -47,8 +52,63 @@ public class OfferService {
         updateAvgCardPrice(offer);
     }
 
-    public List<OfferWithCardNameAndUsername> findAllByCardId(long cardId){
-        return offerRepo.findAllByCardId(cardId);
+    public OffersStatisticsByCard getOfferStatisticsByCardId(long cardId) {
+
+        int wantQuantity = 0;
+        int wantFoilQuantity = 0;
+        int sellQuantity = 0;
+        int sellFoilQuantity = 0;
+        List<OfferWithCardId> offers = offerRepo.findAllByCardId(cardId);
+        BigDecimal avgWant = priceHistoryService.getCurrentAvgCurrentAvgPrice(cardId, false, OfferType.WANT);
+        BigDecimal avgSell = priceHistoryService.getCurrentAvgCurrentAvgPrice(cardId, false, OfferType.SELL);
+
+
+        BigDecimal minWant = offers.stream()
+                .filter(x -> x.getOfferType().equals(OfferType.WANT) && !x.isFoiled())
+                .map(OfferWithCardId::getPrice)
+                .min(Comparator.naturalOrder())
+                .orElse(BigDecimal.valueOf(0));
+
+        BigDecimal minFoilWant = offers.stream()
+                .filter(x -> x.getOfferType().equals(OfferType.WANT) && x.isFoiled())
+                .map(OfferWithCardId::getPrice)
+                .min(Comparator.naturalOrder())
+                .orElse(BigDecimal.valueOf(0));
+
+        BigDecimal minSell = offers.stream()
+                .filter(x -> x.getOfferType().equals(OfferType.SELL) && !x.isFoiled())
+                .map(OfferWithCardId::getPrice)
+                .min(Comparator.naturalOrder())
+                .orElse(BigDecimal.valueOf(0));
+
+        BigDecimal minFoilSell = offers.stream()
+                .filter(x -> x.getOfferType().equals(OfferType.WANT) && x.isFoiled())
+                .map(OfferWithCardId::getPrice)
+                .min(Comparator.naturalOrder())
+                .orElse(BigDecimal.valueOf(0));
+
+        for (OfferWithCardId o : offers) {
+            if (o.isFoiled()) {
+                if (o.getOfferType().equals(OfferType.WANT)) {
+                    wantFoilQuantity += o.getQuantity();
+                } else {
+                    sellFoilQuantity += o.getQuantity();
+                }
+
+            } else {
+                if (o.getOfferType().equals(OfferType.WANT)) {
+                    wantQuantity += o.getQuantity();
+                } else {
+                    sellQuantity += o.getQuantity();
+                }
+            }
+        }
+
+        return new OffersStatisticsByCard(cardId, wantQuantity, sellQuantity, wantFoilQuantity, sellFoilQuantity, minWant, avgWant, minSell, avgSell, minFoilWant, minFoilSell);
+    }
+
+    public List<OfferWithCardNameAndUsername> findAllByCardId(long cardId) {
+        return offerRepo.findAllWithUserByCardId(cardId);
     }
 
     private Offer findExistingOffer(Offer offer) {
@@ -86,7 +146,6 @@ public class OfferService {
                 offer.getId()
         );
     }
-    //todo protected na metodach i testy wszystkiego!
 
     private void setUserAndCard(Offer offer) throws SQLDataException {
         Card cardToSet = cardService.getCardById(offer.getCard().getId());
@@ -98,7 +157,7 @@ public class OfferService {
     private void updateAvgCardPrice(Offer offer) {
         Card card = offer.getCard();
         CardPriceHistory priceHistory = new CardPriceHistory(card, getCardsAvgPrice(card, offer), offer.isFoiled(), offer.getOfferType());
-        wcPriceHistoryService.updatedAvgPrice(priceHistory);
+        priceHistoryService.updatedAvgPrice(priceHistory);
     }
 
     private BigDecimal getCardsAvgPrice(Card card, Offer offer) {

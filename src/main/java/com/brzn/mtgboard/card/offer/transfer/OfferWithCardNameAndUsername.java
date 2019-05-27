@@ -1,6 +1,9 @@
-package com.brzn.mtgboard.card.offer;
+package com.brzn.mtgboard.card.offer.transfer;
 
 import com.brzn.mtgboard.card.Card;
+import com.brzn.mtgboard.card.offer.Condition;
+import com.brzn.mtgboard.card.offer.OfferDeserializer;
+import com.brzn.mtgboard.card.offer.OfferType;
 import com.brzn.mtgboard.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

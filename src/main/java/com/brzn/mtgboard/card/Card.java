@@ -108,7 +108,7 @@ public class Card {
     public Card() {
     }
 
-    public void addWantedCard(Offer offer){
+    public void addWantedCard(Offer offer) {
         this.offers.add(offer);
     }
 

@@ -1,5 +1,7 @@
 package com.brzn.mtgboard.card.offer;
 
+import com.brzn.mtgboard.card.offer.transfer.OfferWithCardId;
+import com.brzn.mtgboard.card.offer.transfer.OfferWithCardNameAndUsername;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -33,10 +35,15 @@ public interface OfferRepo extends JpaRepository<Offer, Long> {
             "limit 1", nativeQuery = true)
     Offer findEqualOffer(String lang, String cond, boolean altered, boolean foiled, boolean signed, long userId, long cardId, BigDecimal price, String offerType);
 
-    @Query(value = "SELECT new com.brzn.mtgboard.card.offer.OfferWithCardNameAndUsername" +
+    @Query(value = "SELECT new com.brzn.mtgboard.card.offer.transfer.OfferWithCardNameAndUsername" +
             "(o.id, c.name, c.id, u.username, u.id, o.quantity, o.language, o.cardCondition, o.comment, o.isFoiled, o.isSigned, o. isAltered, o.price, o.offerType) " +
             "FROM Offer o JOIN o.card c JOIN o.user u WHERE c.id = ?1")
-    List<OfferWithCardNameAndUsername> findAllByCardId(long cardId);
+    List<OfferWithCardNameAndUsername> findAllWithUserByCardId(long cardId);
+
+    @Query(value = "SELECT new com.brzn.mtgboard.card.offer.transfer.OfferWithCardId" +
+            "(o.id, c.id, o.quantity, o.isFoiled, o.price, o.offerType) " +
+            "FROM Offer o JOIN o.card c WHERE c.id = ?1")
+    List<OfferWithCardId> findAllByCardId(long cardId);
 
     @Modifying
     @Query(value = "UPDATE offers SET " +

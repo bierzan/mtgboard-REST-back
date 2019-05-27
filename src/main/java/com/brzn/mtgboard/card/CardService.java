@@ -6,7 +6,6 @@ import com.brzn.mtgboard.cardsSet.CardSetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
@@ -40,13 +39,13 @@ public class CardService {
         return cardRepo.findAllByPartialNameForSearchResult(name);
     }
 
-    List<CardForSearchResult> findAllByPartialNameFromApi(String name)throws  IOException{
+    List<CardForSearchResult> findAllByPartialNameFromApi(String name) throws IOException {
         List<Card> cards = getCardsFromExternalAPI(name);
-        return cards.stream().map(x-> new CardForSearchResult(x.getName(), x.getSet().getName())).collect(Collectors.toList());
+        return cards.stream().map(x -> new CardForSearchResult(x.getName(), x.getSet().getName())).collect(Collectors.toList());
     }
 
     List<Card> getCardsFromExternalAPI(String name) throws IOException {
-        String apiUrl = String.format("%sname=%s",cardApi, name);
+        String apiUrl = String.format("%sname=%s", cardApi, name);
         CardList cardsFromAPI = mapToCardListClassFromAPI(apiUrl);
         return cardsFromAPI.getCards();
     }
@@ -57,7 +56,7 @@ public class CardService {
     }
 
     protected CardForCardPage postCardByNameAndSetName(String cardName, String setName) throws IOException {
-        String apiUrl = String.format("%sname=%s&setName=%s",cardApi, cardName, setName);
+        String apiUrl = String.format("%sname=%s&setName=%s", cardApi, cardName, setName);
         Card card = mapToCardListClassFromAPI(apiUrl).getCards().stream().findFirst().orElseThrow(IOException::new);
         setCardSetForCard(card);
         cardRepo.save(card);
@@ -76,7 +75,7 @@ public class CardService {
 
     protected List<Card> postCardsByName(String name) throws IOException {
         List<Card> cardsFromAPI = getCardsFromExternalAPI(name).stream()
-                .filter(card->card.getName().equalsIgnoreCase(name))
+                .filter(card -> card.getName().equalsIgnoreCase(name))
                 .collect(Collectors.toList());
 
         if (cardsFromAPI.isEmpty()) {
@@ -113,11 +112,11 @@ public class CardService {
         return restTemplate;
     }
 
-    public Card getCardById(long id)throws SQLDataException{
+    public Card getCardById(long id) throws SQLDataException {
         return cardRepo.findById(id).orElseThrow(SQLDataException::new);
     }
 
-    private CardForSearchResult mapToSearchByNameResult(Card card){
+    private CardForSearchResult mapToSearchByNameResult(Card card) {
         return new CardForSearchResult(card.getName(), card.getSet().getName());
     }
 }
