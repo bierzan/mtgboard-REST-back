@@ -1,63 +1,79 @@
 package com.brzn.mtgboard.user;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.brzn.mtgboard.card.offer.Offer;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User {
 
-    //todo informacje o walidacji nakladaja sie. dodac na froncie czyszczenie + info z ktorego pola pochodzi
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    @Setter
     private long id;
 
     @NotEmpty
     @Column(unique = true)
+    @Getter
+    @Setter
     private String username;
 
     @Email
+    @Getter
+    @Setter
     private String email;
 
     @Size(min = 8)
+    @Getter
+    @Setter
     private String password;
+
+    @Getter
+    @Setter
+    private LocalDateTime registered;
+
+    @Getter
+    @Setter
+    private LocalDateTime logged;
+
+    @Getter
+    @Setter
+    private boolean enabled;
+
+    @Getter
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Offer> offers = new ArrayList<>();
+
+    @Getter
+    @Setter
+    private String halfToken;
 
     public User() {
     }
 
-    public long getId() {
-        return id;
+    public List<Offer> getOffers() {
+        return offers;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void addWantedCard(Offer offer){
+        this.offers.add(offer);
     }
 }

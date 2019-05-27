@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -24,10 +25,17 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody User user) throws SQLRecordNotUniqueException, URISyntaxException {
+    public ResponseEntity<UserToken> createUser(@Valid @RequestBody User user) throws SQLRecordNotUniqueException, URISyntaxException {
 
-            userService.saveUser(user);
-            return ResponseEntity.created(new URI("/users/" + user.getId())).build();
-        }
+        userService.saveUser(user);
+        return ResponseEntity.created(new URI("/users/" + user.getId()))
+                .build();
     }
 
+
+    @PostMapping("/login") //todo obsluga wyjatu
+    public ResponseEntity<UserToken> loginUser(@Valid @RequestBody UserDTO user) throws HttpClientErrorException {
+        UserToken token = userService.generateUserToken(user);
+        return ResponseEntity.ok(token);
+    }
+}

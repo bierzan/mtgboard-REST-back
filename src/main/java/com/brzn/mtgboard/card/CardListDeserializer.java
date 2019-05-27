@@ -17,9 +17,6 @@ import java.util.List;
 
 public class CardListDeserializer extends StdDeserializer<CardList> {
 
-    @Autowired
-    CardSetRepo cardSetRepo;
-
     public CardListDeserializer() {
         super(CardSet.class);
     }
@@ -59,9 +56,7 @@ public class CardListDeserializer extends StdDeserializer<CardList> {
                     sb.append(" / ");
                 }
                 String names = sb.toString();
-                if (names.length() > 0) {
-                    card.setNames(names.substring(0, names.length() - 3));
-                }
+                if (names.length() > 0) card.setNames(names.substring(0, names.length() - 3));
             }
 
             card.setCmc(node.get("cmc").asText());
@@ -75,22 +70,32 @@ public class CardListDeserializer extends StdDeserializer<CardList> {
                 card.setColors(colors.substring(0, colors.length() - 2));
             }
 
-
             card.setType(node.get("type").asText());
             card.setRarity(node.get("rarity").asText());
-            if (node.has("text")) {
-                card.setText(node.get("text").asText());
-            }
-            if (node.hasNonNull("flavor")) card.setFlavor(node.get("flavor").asText());
             card.setArtist(node.get("artist").asText());
             card.setNumber(node.get("number").asText());
+            card.setLayout(node.get("layout").asText());
+            card.setSet(new CardSet(node.get("setName").asText()));
+
+            if (node.has("text")) card.setText(node.get("text").asText());
+            if (node.hasNonNull("flavor")) card.setFlavor(node.get("flavor").asText());
             if (node.hasNonNull("power")) card.setPower(node.get("power").asText());
             if (node.hasNonNull("toughness")) card.setToughness(node.get("toughness").asText());
-            card.setLayout(node.get("layout").asText());
             if (node.hasNonNull("multiverseid")) card.setMultiverseId(node.get("multiverseid").asLong());
-            card.setSet(new CardSet(node.get("setName").asText()));
             if (node.hasNonNull("imageUrl")) card.setImageUrl(new URL(node.get("imageUrl").asText()));
-            //todo cardbuilder by sie przydal
+
+            if (node.get("foreignNames").size() > 0) {
+                StringBuilder langs = new StringBuilder();
+                langs.append("English, ");
+                for (JsonNode langNode : node.get("foreignNames")) {
+                    langs.append(langNode.get("language").asText());
+                    langs.append(", ");
+                }
+                String languages = langs.toString();
+                card.setLanguages(languages.substring(0, languages.length() - 2));
+            } else{
+                card.setLanguages("English");
+            }
 
             cards.add(card);
         }

@@ -1,5 +1,7 @@
 package com.brzn.mtgboard.exceptionHandler;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,18 +9,22 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ControllerAdvice("com.brzn.app")
+@Order(Ordered.HIGHEST_PRECEDENCE)
+@ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = { EntityNotFoundException.class })
+    @ExceptionHandler(value = {EntityNotFoundException.class})
     protected ResponseEntity<Object> handleNotFound(final RuntimeException ex, final WebRequest request,
                                                     HttpHeaders headers, HttpStatus status) {
 
@@ -41,15 +47,30 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
         return new ResponseEntity<Object>(apiError, headers, apiError.getStatus());
     }
+
     @Override
     public ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
-                                             HttpHeaders headers,
-                                             HttpStatus status,
-                                             WebRequest request){
+                                                                   HttpHeaders headers,
+                                                                   HttpStatus status,
+                                                                   WebRequest request) {
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex.getMessage());
 
         return new ResponseEntity<Object>(apiError, headers, apiError.getStatus());
+    }
+
+    @ExceptionHandler(value = HttpClientErrorException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(HttpClientErrorException ex, HttpHeaders headers,
+                                                              HttpStatus status, WebRequest request) {
+
+
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getLocalizedMessage());
+
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getMessage(), errors);
+
+        return new ResponseEntity<Object>(apiError, headers, apiError.getStatus());
+
     }
 
     @ExceptionHandler({Exception.class})
