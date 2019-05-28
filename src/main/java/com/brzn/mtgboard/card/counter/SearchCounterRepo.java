@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SearchCounterRepo extends JpaRepository<SearchCounter, Long> {
 
@@ -25,4 +27,7 @@ public interface SearchCounterRepo extends JpaRepository<SearchCounter, Long> {
     @Modifying
     @Query(value = "UPDATE search_count SET counted_searches=?1 WHERE card_id=?2", nativeQuery = true)
     void update(long count, long cardId);
+
+    @Query(value = "SELECT * FROM search_count ORDER BY counted_searches DESC LIMIT ?1 ", nativeQuery = true)
+    List<SearchCounter> findTopSearchedCards(int limit);
 }

@@ -78,6 +78,11 @@ class CardController {
         return ResponseEntity.ok(searchCounterService.getCountedSearch(cardId));
     }
 
+    @GetMapping("/counter/top/{limit}")
+    ResponseEntity<List<CardForMainPage>> getTopSearchedCard(@PathVariable("limit") int limit) {
+        return ResponseEntity.ok(searchCounterService.getTopSearchedCards(limit));
+    }
+
 
 }
 
