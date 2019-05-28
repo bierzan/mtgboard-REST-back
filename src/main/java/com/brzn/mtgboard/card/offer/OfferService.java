@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLDataException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -59,8 +58,8 @@ public class OfferService {
         int sellQuantity = 0;
         int sellFoilQuantity = 0;
         List<OfferWithCardId> offers = offerRepo.findAllByCardId(cardId);
-        BigDecimal avgWant = priceHistoryService.getCurrentAvgCurrentAvgPrice(cardId, false, OfferType.WANT);
-        BigDecimal avgSell = priceHistoryService.getCurrentAvgCurrentAvgPrice(cardId, false, OfferType.SELL);
+        BigDecimal avgWant = priceHistoryService.getCurrentAvgPrice(cardId, false, OfferType.WANT);
+        BigDecimal avgSell = priceHistoryService.getCurrentAvgPrice(cardId, false, OfferType.SELL);
 
 
         BigDecimal minWant = offers.stream()
@@ -161,17 +160,23 @@ public class OfferService {
     }
 
     private BigDecimal getCardsAvgPrice(Card card, Offer offer) {
-        List<Offer> offers = offerRepo.findAllByCardIdAndOfferTypeAndFoiled(card.getId(), offer.getOfferType(), offer.isFoiled());
-        int totalQuantity = 0;
-        BigDecimal sumOfPrices = new BigDecimal(0);
-        for (Offer o : offers) {
-            totalQuantity += o.getQuantity();
-            sumOfPrices = sumOfPrices.add(o.getPrice().multiply(new BigDecimal(o.getQuantity())));
-        }
-        if (totalQuantity == 0) {
+        List<Offer> offers = offerRepo.findAllByCardIdAndOfferTypeAndFoiled(card.getId(), offer.getOfferType().toString(), offer.isFoiled());
+
+        if (offers.size() == 0) {
             return offer.getPrice();
         }
 
-        return sumOfPrices.divide(new BigDecimal(totalQuantity), 2, RoundingMode.HALF_DOWN);
+        int totalQuantity = 0;
+
+        BigDecimal sumOfPrices = new BigDecimal(0);
+        for (Offer o : offers) {
+            int quantity = o.getQuantity();
+            BigDecimal priceTotal = o.getPrice().multiply(BigDecimal.valueOf(quantity));
+
+            totalQuantity += quantity;
+            sumOfPrices = sumOfPrices.add(priceTotal);
+        }
+
+        return sumOfPrices.divide(BigDecimal.valueOf(totalQuantity), 2, RoundingMode.HALF_DOWN);
     }
 }

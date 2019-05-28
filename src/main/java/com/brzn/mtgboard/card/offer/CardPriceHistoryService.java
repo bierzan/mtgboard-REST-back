@@ -35,7 +35,7 @@ public class CardPriceHistoryService {
         }
     }
 
-    BigDecimal getCurrentAvgCurrentAvgPrice(long cardId, boolean isFoiled, OfferType offerType) {
+    BigDecimal getCurrentAvgPrice(long cardId, boolean isFoiled, OfferType offerType) {
         return priceHistoryRepo.findRecentAvgWantPriceByCardId(cardId, isFoiled, offerType.toString());
     }
 

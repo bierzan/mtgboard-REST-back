@@ -14,7 +14,7 @@ import java.util.List;
 public interface OfferRepo extends JpaRepository<Offer, Long> {
 
     @Query(value = "SELECT * FROM offers where card_id = ?1 AND offer_type= ?2 AND is_foiled = ?3", nativeQuery = true)
-    List<Offer> findAllByCardIdAndOfferTypeAndFoiled(long cardId, OfferType type, boolean isFoiled);
+    List<Offer> findAllByCardIdAndOfferTypeAndFoiled(long cardId, String type, boolean isFoiled);
 
     Offer findOneByCardId(long id);
 

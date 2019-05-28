@@ -50,7 +50,12 @@ public class CardService {
         return cardsFromAPI.getCards();
     }
 
-    CardForCardPage getCardByNameAndSetName(String cardName, String setName) {
+    CardForCardPage getDtoCardByNameAndSetName(String cardName, String setName) {
+        return cardRepo.findDtoByNameAndSetName(cardName, setName);
+
+    }
+
+    Card getCardByNameAndSetName(String cardName, String setName) {
         return cardRepo.findByNameAndSetName(cardName, setName);
 
     }

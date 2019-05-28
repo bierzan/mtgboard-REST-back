@@ -18,5 +18,8 @@ public interface CardRepo extends JpaRepository<Card, Long> {
     @Query(value = "SELECT new com.brzn.mtgboard.card.CardForCardPage" +
             "(c.id, c.name, c.names, c.manaCost, c.cmc, c.colors, c.type, c.rarity, s.name, c.text, c.flavor, c.artist, c.number, c.power, c.toughness, c.layout, c.multiverseId, c.imageUrl, c.languages)" +
             " FROM Card c JOIN c.set s WHERE UPPER(c.name)=upper(?1) AND UPPER(s.name)=upper(?2)")
-    CardForCardPage findByNameAndSetName(String name, String setName);
+    CardForCardPage findDtoByNameAndSetName(String name, String setName);
+
+    @Query(value = "SELECT c FROM Card c JOIN c.set s WHERE UPPER(c.name)=upper(?1) AND UPPER(s.name)=upper(?2)")
+    Card findByNameAndSetName(String name, String setName);
 }
