@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.cardsSet;
+package com.brzn.mtgboard.card.cardsSet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

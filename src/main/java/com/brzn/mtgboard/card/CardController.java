@@ -2,8 +2,11 @@ package com.brzn.mtgboard.card;
 
 import com.brzn.mtgboard.card.counter.SearchCounter;
 import com.brzn.mtgboard.card.counter.SearchCounterService;
-import com.brzn.mtgboard.card.counter.transfer.NumberOfSearchesWithCardId;
-import com.brzn.mtgboard.cardsSet.CardSetService;
+import com.brzn.mtgboard.card.counter.dto.NumberOfSearchesWithCardId;
+import com.brzn.mtgboard.card.cardsSet.CardSetService;
+import com.brzn.mtgboard.card.dto.CardForCardPage;
+import com.brzn.mtgboard.card.dto.CardForMainPage;
+import com.brzn.mtgboard.card.dto.CardForSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

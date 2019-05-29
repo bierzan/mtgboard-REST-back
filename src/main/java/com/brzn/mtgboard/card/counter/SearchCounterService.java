@@ -1,23 +1,16 @@
 package com.brzn.mtgboard.card.counter;
 
 import com.brzn.mtgboard.card.*;
-import com.brzn.mtgboard.card.counter.transfer.NumberOfSearchesWithCardId;
-import com.brzn.mtgboard.card.offer.OfferService;
-import com.brzn.mtgboard.card.offer.transfer.OffersStatisticsByCard;
-import com.brzn.mtgboard.cardsSet.CardSet;
-import com.brzn.mtgboard.cardsSet.CardSetRepo;
-import com.brzn.mtgboard.cardsSet.CardSetService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.brzn.mtgboard.card.counter.dto.NumberOfSearchesWithCardId;
+import com.brzn.mtgboard.card.dto.CardForMainPage;
+import com.brzn.mtgboard.offer.OfferService;
+import com.brzn.mtgboard.offer.dto.OffersStatisticsByCard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.sql.SQLDataException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional

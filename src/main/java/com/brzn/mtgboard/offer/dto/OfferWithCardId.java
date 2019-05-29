@@ -1,12 +1,8 @@
-package com.brzn.mtgboard.card.offer.transfer;
+package com.brzn.mtgboard.offer.dto;
 
-import com.brzn.mtgboard.card.offer.Condition;
-import com.brzn.mtgboard.card.offer.OfferDeserializer;
-import com.brzn.mtgboard.card.offer.OfferType;
+import com.brzn.mtgboard.offer.OfferType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

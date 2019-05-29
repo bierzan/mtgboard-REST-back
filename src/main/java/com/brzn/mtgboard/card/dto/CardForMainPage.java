@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.card;
+package com.brzn.mtgboard.card.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;

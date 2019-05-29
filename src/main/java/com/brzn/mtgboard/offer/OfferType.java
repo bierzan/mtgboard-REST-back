@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.card.offer;
+package com.brzn.mtgboard.offer;
 
 public enum OfferType {
     WANT, SELL

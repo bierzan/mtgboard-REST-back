@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.card.offer;
+package com.brzn.mtgboard.offer;
 
 import com.brzn.mtgboard.card.Card;
 import com.brzn.mtgboard.user.User;

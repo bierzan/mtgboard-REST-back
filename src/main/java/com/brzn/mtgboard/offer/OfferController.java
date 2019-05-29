@@ -1,9 +1,9 @@
-package com.brzn.mtgboard.card.offer;
+package com.brzn.mtgboard.offer;
 
-import com.brzn.mtgboard.card.offer.transfer.CardAvgPriceWithDate;
-import com.brzn.mtgboard.card.offer.transfer.CardAvgPricesHistoryByType;
-import com.brzn.mtgboard.card.offer.transfer.OfferWithCardNameAndUsername;
-import com.brzn.mtgboard.card.offer.transfer.OffersStatisticsByCard;
+import com.brzn.mtgboard.offer.history.dto.CardAvgPricesHistoryByType;
+import com.brzn.mtgboard.offer.dto.OfferWithCardNameAndUsername;
+import com.brzn.mtgboard.offer.dto.OffersStatisticsByCard;
+import com.brzn.mtgboard.offer.history.CardPriceHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

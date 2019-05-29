@@ -1,6 +1,7 @@
-package com.brzn.mtgboard.card.offer;
+package com.brzn.mtgboard.offer.history;
 
 import com.brzn.mtgboard.card.Card;
+import com.brzn.mtgboard.offer.OfferType;
 import lombok.Getter;
 import lombok.Setter;
 

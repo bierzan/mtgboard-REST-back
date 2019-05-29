@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.card.offer.transfer;
+package com.brzn.mtgboard.offer.history.dto;
 
 import lombok.Getter;
 import lombok.Setter;

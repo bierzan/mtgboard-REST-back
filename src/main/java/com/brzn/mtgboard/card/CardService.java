@@ -1,8 +1,10 @@
 package com.brzn.mtgboard.card;
 
-import com.brzn.mtgboard.cardsSet.CardSet;
-import com.brzn.mtgboard.cardsSet.CardSetRepo;
-import com.brzn.mtgboard.cardsSet.CardSetService;
+import com.brzn.mtgboard.card.cardsSet.CardSet;
+import com.brzn.mtgboard.card.cardsSet.CardSetRepo;
+import com.brzn.mtgboard.card.cardsSet.CardSetService;
+import com.brzn.mtgboard.card.dto.CardForCardPage;
+import com.brzn.mtgboard.card.dto.CardForSearchResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

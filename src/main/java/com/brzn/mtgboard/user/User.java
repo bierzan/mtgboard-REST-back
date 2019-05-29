@@ -1,6 +1,6 @@
 package com.brzn.mtgboard.user;
 
-import com.brzn.mtgboard.card.offer.Offer;
+import com.brzn.mtgboard.offer.Offer;
 import lombok.Getter;
 import lombok.Setter;
 

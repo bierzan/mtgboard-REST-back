@@ -1,6 +1,6 @@
-package com.brzn.mtgboard.card.offer;
+package com.brzn.mtgboard.offer.history;
 
-import com.brzn.mtgboard.card.offer.transfer.CardAvgPriceWithDate;
+import com.brzn.mtgboard.offer.history.dto.CardAvgPriceWithDate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,13 +25,13 @@ public interface CardPriceHistoryRepo extends JpaRepository<CardPriceHistory, Lo
     @Query(value = "SELECT * FROM prices_history WHERE card_id=?1", nativeQuery = true)
     List<CardPriceHistory> findAllByCardId(long cardId);
 
-    @Query(value = "SELECT new com.brzn.mtgboard.card.offer.transfer.CardAvgPriceWithDate(" +
+    @Query(value = "SELECT new com.brzn.mtgboard.offer.history.dto.CardAvgPriceWithDate(" +
             "cph.date, cph.avgPrice) FROM CardPriceHistory cph " +
             "JOIN cph.card c " +
             "WHERE c.id=?1 AND cph.offerType='WANT' AND cph.isFoiled='false' ORDER BY cph.date ASC")
     List<CardAvgPriceWithDate> findAllWantNonFoiledByCardId(long cardId);
 
-    @Query(value = "SELECT new com.brzn.mtgboard.card.offer.transfer.CardAvgPriceWithDate(" +
+    @Query(value = "SELECT new com.brzn.mtgboard.offer.history.dto.CardAvgPriceWithDate(" +
             "cph.date, cph.avgPrice) FROM CardPriceHistory cph " +
             "JOIN cph.card c " +
             "WHERE c.id=?1 AND cph.offerType='SELL' AND cph.isFoiled='false' ORDER BY cph.date ASC ")

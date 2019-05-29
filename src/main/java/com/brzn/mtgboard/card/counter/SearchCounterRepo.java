@@ -1,7 +1,7 @@
 package com.brzn.mtgboard.card.counter;
 
 import com.brzn.mtgboard.card.Card;
-import com.brzn.mtgboard.card.counter.transfer.NumberOfSearchesWithCardId;
+import com.brzn.mtgboard.card.counter.dto.NumberOfSearchesWithCardId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +18,7 @@ public interface SearchCounterRepo extends JpaRepository<SearchCounter, Long> {
             "WHERE c.name=?1 AND s.name=?2")
     SearchCounter findOneByCardNameAndSetName(String cardName, String setName);
 
-    @Query(value = "SELECT new com.brzn.mtgboard.card.counter.transfer.NumberOfSearchesWithCardId(" +
+    @Query(value = "SELECT new com.brzn.mtgboard.card.counter.dto.NumberOfSearchesWithCardId(" +
             "c.id, sc.countedSearches) FROM SearchCounter sc JOIN sc.card c WHERE c.id=?1")
     NumberOfSearchesWithCardId findOneByCardId(long cardId);
 

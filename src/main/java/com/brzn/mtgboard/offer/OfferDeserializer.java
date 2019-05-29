@@ -1,7 +1,7 @@
-package com.brzn.mtgboard.card.offer;
+package com.brzn.mtgboard.offer;
 
 import com.brzn.mtgboard.card.Card;
-import com.brzn.mtgboard.cardsSet.CardSet;
+import com.brzn.mtgboard.card.cardsSet.CardSet;
 import com.brzn.mtgboard.user.User;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

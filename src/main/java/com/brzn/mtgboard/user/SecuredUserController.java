@@ -1,7 +1,7 @@
 package com.brzn.mtgboard.user;
 
-import com.brzn.mtgboard.card.offer.Offer;
-import com.brzn.mtgboard.card.offer.OfferService;
+import com.brzn.mtgboard.offer.Offer;
+import com.brzn.mtgboard.offer.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

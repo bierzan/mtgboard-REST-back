@@ -1,6 +1,7 @@
-package com.brzn.mtgboard.card;
+package com.brzn.mtgboard.card.dto;
 
 
+import com.brzn.mtgboard.card.Card;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

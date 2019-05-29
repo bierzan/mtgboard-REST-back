@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.cardsSet;
+package com.brzn.mtgboard.card.cardsSet;
 
 import java.util.ArrayList;
 import java.util.List;

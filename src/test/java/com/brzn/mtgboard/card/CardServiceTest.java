@@ -1,8 +1,7 @@
 package com.brzn.mtgboard.card;
 
-import com.brzn.mtgboard.cardsSet.CardSet;
-import com.brzn.mtgboard.cardsSet.CardSetRepo;
-import com.brzn.mtgboard.cardsSet.CardSetService;
+import com.brzn.mtgboard.card.cardsSet.CardSetRepo;
+import com.brzn.mtgboard.card.cardsSet.CardSetService;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Test;
 

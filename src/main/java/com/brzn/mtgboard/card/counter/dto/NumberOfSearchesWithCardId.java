@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.card.counter.transfer;
+package com.brzn.mtgboard.card.counter.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

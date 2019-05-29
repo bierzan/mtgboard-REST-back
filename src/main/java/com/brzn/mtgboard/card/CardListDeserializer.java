@@ -1,14 +1,12 @@
 package com.brzn.mtgboard.card;
 
-import com.brzn.mtgboard.cardsSet.CardSet;
-import com.brzn.mtgboard.cardsSet.CardSetRepo;
+import com.brzn.mtgboard.card.cardsSet.CardSet;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.net.URL;

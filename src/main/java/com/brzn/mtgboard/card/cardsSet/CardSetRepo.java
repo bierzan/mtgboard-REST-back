@@ -1,4 +1,4 @@
-package com.brzn.mtgboard.cardsSet;
+package com.brzn.mtgboard.card.cardsSet;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

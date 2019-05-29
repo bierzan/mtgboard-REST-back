@@ -1,8 +1,8 @@
 package com.brzn.mtgboard.card;
 
 
-import com.brzn.mtgboard.card.offer.Offer;
-import com.brzn.mtgboard.cardsSet.CardSet;
+import com.brzn.mtgboard.offer.Offer;
+import com.brzn.mtgboard.card.cardsSet.CardSet;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

@@ -1,7 +1,8 @@
-package com.brzn.mtgboard.card.offer;
+package com.brzn.mtgboard.offer.history;
 
-import com.brzn.mtgboard.card.offer.transfer.CardAvgPriceWithDate;
-import com.brzn.mtgboard.card.offer.transfer.CardAvgPricesHistoryByType;
+import com.brzn.mtgboard.offer.OfferType;
+import com.brzn.mtgboard.offer.history.dto.CardAvgPriceWithDate;
+import com.brzn.mtgboard.offer.history.dto.CardAvgPricesHistoryByType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class CardPriceHistoryService {
         this.priceHistoryRepo = priceHistoryRepo;
     }
 
-    void updatedAvgPrice(CardPriceHistory priceHistory) {
+    public void updatedAvgPrice(CardPriceHistory priceHistory) {
         CardPriceHistory priceHistoryFromDB = priceHistoryRepo.findOneByCardAndFoiledAndDateAndOfferType(priceHistory.getCard().getId()
                 , priceHistory.isFoiled()
                 , LocalDate.now().toString()
@@ -35,11 +36,11 @@ public class CardPriceHistoryService {
         }
     }
 
-    BigDecimal getCurrentAvgPrice(long cardId, boolean isFoiled, OfferType offerType) {
+    public BigDecimal getCurrentAvgPrice(long cardId, boolean isFoiled, OfferType offerType) {
         return priceHistoryRepo.findRecentAvgWantPriceByCardId(cardId, isFoiled, offerType.toString());
     }
 
-    CardAvgPricesHistoryByType getPricesHistoryByCardIdSorted(long cardId) {
+    public CardAvgPricesHistoryByType getPricesHistoryByCardIdSorted(long cardId) {
 
         CardAvgPricesHistoryByType pricesByType = new CardAvgPricesHistoryByType();
         pricesByType.setCardId(cardId);

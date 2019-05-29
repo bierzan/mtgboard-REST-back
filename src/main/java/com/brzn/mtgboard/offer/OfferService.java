@@ -1,10 +1,12 @@
-package com.brzn.mtgboard.card.offer;
+package com.brzn.mtgboard.offer;
 
 import com.brzn.mtgboard.card.Card;
 import com.brzn.mtgboard.card.CardService;
-import com.brzn.mtgboard.card.offer.transfer.OfferWithCardId;
-import com.brzn.mtgboard.card.offer.transfer.OfferWithCardNameAndUsername;
-import com.brzn.mtgboard.card.offer.transfer.OffersStatisticsByCard;
+import com.brzn.mtgboard.offer.dto.OfferWithCardId;
+import com.brzn.mtgboard.offer.dto.OfferWithCardNameAndUsername;
+import com.brzn.mtgboard.offer.dto.OffersStatisticsByCard;
+import com.brzn.mtgboard.offer.history.CardPriceHistory;
+import com.brzn.mtgboard.offer.history.CardPriceHistoryService;
 import com.brzn.mtgboard.user.User;
 import com.brzn.mtgboard.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
