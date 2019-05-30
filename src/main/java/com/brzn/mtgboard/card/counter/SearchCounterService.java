@@ -39,8 +39,8 @@ public class SearchCounterService {
     }
 
     public NumberOfSearchesWithCardId getCountedSearch(long cardId){
-        NumberOfSearchesWithCardId sc = searchCounterRepo.findOneByCardId(cardId);
-        return sc;
+        return searchCounterRepo.findOneByCardId(cardId);
+
     }
 
     public List<CardForMainPage> getTopSearchedCards(int limit){

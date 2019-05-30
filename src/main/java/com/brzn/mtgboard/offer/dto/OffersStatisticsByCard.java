@@ -56,6 +56,8 @@ public class OffersStatisticsByCard {
     @Setter
     private BigDecimal minFoilSell;
 
+    public OffersStatisticsByCard() {
+    }
 
     public OffersStatisticsByCard(long cardId, int wantQuantity, int sellQuantity, int wantFoilQuantity, int sellFoilQuantity, BigDecimal minWant, BigDecimal avgWant, BigDecimal minSell, BigDecimal avgSell, BigDecimal minFoilWant, BigDecimal minFoilSell) {
         this.cardId = cardId;

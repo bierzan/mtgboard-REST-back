@@ -1,10 +1,12 @@
 package com.brzn.mtgboard.card.cardsSet;
 
+import com.brzn.mtgboard.card.CardService;
+import net.bytebuddy.utility.RandomString;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -22,5 +24,11 @@ public class CardSetServiceTest {
         assertThat(cardSet.getId(), notNullValue());
         assertThat(cardSet.getReleaseDate(), notNullValue());
         assertThat(cardSet.getType(), notNullValue());
+    }
+
+    @Test(expected = IOException.class)
+    public void shouldThrowIOException() throws IOException{
+        String setName = RandomString.make(10);
+        CardSet cardSet = cardSetService.getCardSetByNameFromAPI(setName);
     }
 }
