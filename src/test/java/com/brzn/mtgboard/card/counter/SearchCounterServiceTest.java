@@ -46,7 +46,6 @@ public class SearchCounterServiceTest {
         sc.setCountedSearches(counter);
 
         when(counterRepo.findOneByCard(any(Card.class))).thenReturn(sc);
-        when(counterRepo.save(any(SearchCounter.class))).thenReturn(new SearchCounter());
 
         SearchCounter searchCounter = counterService.addSearch(card);
 

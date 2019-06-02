@@ -83,7 +83,7 @@ public class OfferService {
                 .orElse(BigDecimal.valueOf(0));
 
         BigDecimal minFoilSell = offers.stream()
-                .filter(x -> x.getOfferType().equals(OfferType.WANT) && x.isFoiled())
+                .filter(x -> x.getOfferType().equals(OfferType.SELL) && x.isFoiled())
                 .map(OfferWithCardId::getPrice)
                 .min(Comparator.naturalOrder())
                 .orElse(BigDecimal.valueOf(0));
