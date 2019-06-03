@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 @Transactional
 public class CardService {
 
-    CardRepo cardRepo;
-    CardSetRepo cardSetRepo;
-    CardSetService cardSetService;
+    private CardRepo cardRepo;
+    private CardSetRepo cardSetRepo;
+    private CardSetService cardSetService;
     private String cardApi = "https://api.magicthegathering.io/v1/cards?";
 
     @Autowired

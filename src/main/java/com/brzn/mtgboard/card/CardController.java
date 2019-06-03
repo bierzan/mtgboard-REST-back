@@ -3,11 +3,11 @@ package com.brzn.mtgboard.card;
 import com.brzn.mtgboard.card.counter.SearchCounter;
 import com.brzn.mtgboard.card.counter.SearchCounterService;
 import com.brzn.mtgboard.card.counter.dto.NumberOfSearchesWithCardId;
-import com.brzn.mtgboard.card.cardsSet.CardSetService;
 import com.brzn.mtgboard.card.dto.CardForCardPage;
 import com.brzn.mtgboard.card.dto.CardForMainPage;
 import com.brzn.mtgboard.card.dto.CardForSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,14 +20,12 @@ import java.util.List;
 @RequestMapping("/cards")
 class CardController {
 
-    CardService cardService;
-    CardSetService cardSetService;
-    SearchCounterService searchCounterService;
+    private CardService cardService;
+    private SearchCounterService searchCounterService;
 
     @Autowired
-    public CardController(CardService cardService, CardSetService cardSetService, SearchCounterService searchCounterService) {
+    public CardController(CardService cardService, SearchCounterService searchCounterService) {
         this.cardService = cardService;
-        this.cardSetService = cardSetService;
         this.searchCounterService = searchCounterService;
     }
 
@@ -71,9 +69,9 @@ class CardController {
 
     @PostMapping("/counter/{cardName}/{setName}")
     ResponseEntity<Void> addSearch(@PathVariable("cardName") String cardName,
-                                            @PathVariable("setName") String setName) throws URISyntaxException {
+                                   @PathVariable("setName") String setName) throws URISyntaxException {
         SearchCounter searchCounter = searchCounterService.addSearch(cardService.getCardByNameAndSetName(cardName, setName));
-        return ResponseEntity.created(new URI("/cards/counter/"+searchCounter.getId())).build();
+        return ResponseEntity.created(new URI("/cards/counter/" + searchCounter.getId())).build();
     }
 
     @GetMapping("/counter/{cardId}")
