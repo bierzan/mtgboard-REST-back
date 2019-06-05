@@ -18,13 +18,11 @@ import java.sql.SQLDataException;
 @RequestMapping("/user")
 public class SecuredUserController {
 
-    private UserService userService;
     private SecuredUserService securedUserService;
     private OfferService offerService;
 
     @Autowired
-    public SecuredUserController(UserService userService, SecuredUserService securedUserService, OfferService offerService) {
-        this.userService = userService;
+    public SecuredUserController(SecuredUserService securedUserService, OfferService offerService) {
         this.securedUserService = securedUserService;
         this.offerService = offerService;
     }
