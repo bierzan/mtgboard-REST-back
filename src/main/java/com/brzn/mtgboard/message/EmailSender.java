@@ -1,12 +1,11 @@
-package com.brzn.mtgboard.mail;
+package com.brzn.mtgboard.message;
 
+import com.brzn.mtgboard.message.dto.MessageDataForEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 @Component
 public class EmailSender {
@@ -31,14 +30,21 @@ public class EmailSender {
         }
     }
 
-    public void sendSimpleMessageUsingTemplate(String to,
-                                               String subject,
-                                               SimpleMailMessage template,
-                                               String ...templateArgs) {
-        Objects.requireNonNull(template);
-        Objects.requireNonNull(templateArgs);
-        String text = String.format(template.getText(), templateArgs);  
-        sendSimpleMessage(to, subject, text);
+    public void sendTemplateMessage(MessageDataForEmail msg) {
+        String template = "Wiadomość od: %s, %s\n" +
+                "do: %s, %s\n" +
+                "Dotyczy oferty:\n" +
+                "%s\n\n" +
+                "Treść wiadomości:\n" +
+                "%s\n" +
+                "\n\n" +
+                "Wiadomość wygenerowana automatycznie przez serwis MTGBOARD";
+        String text = String.format(template,
+                msg.getUserFrom(), msg.getMailFrom(),
+                msg.getUserTo(), msg.getMailTo(),
+                msg.getOffer(),
+                msg.getMessage());
+        sendSimpleMessage(msg.getMailTo(), msg.getSubject(), text);
     }
 
 }

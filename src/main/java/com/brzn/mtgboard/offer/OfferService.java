@@ -53,6 +53,10 @@ public class OfferService {
         updateAvgCardPrice(offer);
     }
 
+    public Offer findOfferById(long id) {
+        return offerRepo.findOneByOfferId(id);
+    }
+
     public OffersStatisticsByCard getOfferStatisticsByCardId(long cardId) {
 
         int wantQuantity = 0;

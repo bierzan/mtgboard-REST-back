@@ -27,7 +27,7 @@ public class UserService {
         if (ifUsernameExists(user.getUsername())) {
             throw new SQLRecordNotUniqueException("użytkownik o takiej nazwie już jest zarejestrowany");
         } else if (ifUserEmailExists(user.getEmail())) {
-            throw new SQLRecordNotUniqueException("taki e-mail już jest zarejestrowany");
+            throw new SQLRecordNotUniqueException("taki e-message już jest zarejestrowany");
         }
         user.setRegistered(LocalDateTime.now());
         user.setLogged(LocalDateTime.now());

@@ -68,4 +68,7 @@ public interface OfferRepo extends JpaRepository<Offer, Long> {
             BigDecimal price,
             String localDateTime,
             long id);
+
+    @Query(value = "SELECT * FROM offers WHERE id=?1", nativeQuery = true)
+    Offer findOneByOfferId(long id);
 }
