@@ -33,7 +33,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/login") //todo obsluga wyjatu
+    @PostMapping("/login")
     public ResponseEntity<UserToken> loginUser(@Valid @RequestBody UserDTO user) throws HttpClientErrorException {
         UserToken token = userService.generateUserToken(user);
         return ResponseEntity.ok(token);

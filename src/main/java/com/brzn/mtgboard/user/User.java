@@ -1,6 +1,7 @@
 package com.brzn.mtgboard.user;
 
-import com.brzn.mtgboard.card.offer.Offer;
+import com.brzn.mtgboard.message.Message;
+import com.brzn.mtgboard.offer.Offer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -60,6 +61,11 @@ public class User {
 
     @Getter
     @Setter
+    @OneToMany(mappedBy = "userFrom", fetch = FetchType.LAZY)
+    private List<Message> messages = new ArrayList<>();
+
+    @Getter
+    @Setter
     private String halfToken;
 
     public User() {
@@ -76,4 +82,6 @@ public class User {
     public void addWantedCard(Offer offer){
         this.offers.add(offer);
     }
+
+
 }

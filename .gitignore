@@ -1,9 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Eclipse template
 
-.idea/
+*/SecuredUserControllerTest.java
 
-mtg-board.iml
+*/.idea
 
 .metadata
 bin/

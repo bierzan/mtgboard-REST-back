@@ -1,24 +1,32 @@
 package com.brzn.mtgboard.card;
 
-import com.brzn.mtgboard.cardsSet.CardSetService;
+import com.brzn.mtgboard.card.counter.SearchCounter;
+import com.brzn.mtgboard.card.counter.SearchCounterService;
+import com.brzn.mtgboard.card.counter.dto.NumberOfSearchesWithCardId;
+import com.brzn.mtgboard.card.dto.CardForCardPage;
+import com.brzn.mtgboard.card.dto.CardForMainPage;
+import com.brzn.mtgboard.card.dto.CardForSearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/cards")
 class CardController {
 
-    CardService cardService;
-    CardSetService cardSetService;
+    private CardService cardService;
+    private SearchCounterService searchCounterService;
 
     @Autowired
-    public CardController(CardService cardService, CardSetService cardSetService) {
+    public CardController(CardService cardService, SearchCounterService searchCounterService) {
         this.cardService = cardService;
-        this.cardSetService = cardSetService;
+        this.searchCounterService = searchCounterService;
     }
 
     @GetMapping("/name/like/{name}")
@@ -33,7 +41,7 @@ class CardController {
     @GetMapping("/name/set/{name}/{setName}")
     ResponseEntity<CardForCardPage> getCardByNameAndSetName(@PathVariable("name") String name,
                                                             @PathVariable("setName") String setName) {
-        CardForCardPage card = cardService.getCardByNameAndSetName(name, setName);
+        CardForCardPage card = cardService.getDtoCardByNameAndSetName(name, setName);
         if (card == null) {
             return ResponseEntity.notFound().build();
         }
@@ -58,6 +66,24 @@ class CardController {
         }
         return ResponseEntity.ok(cards);
     }
+
+    @PostMapping("/counter/{cardName}/{setName}")
+    ResponseEntity<Void> addSearch(@PathVariable("cardName") String cardName,
+                                   @PathVariable("setName") String setName) throws URISyntaxException {
+        SearchCounter searchCounter = searchCounterService.addSearch(cardService.getCardByNameAndSetName(cardName, setName));
+        return ResponseEntity.created(new URI("/cards/counter/" + searchCounter.getId())).build();
+    }
+
+    @GetMapping("/counter/{cardId}")
+    ResponseEntity<NumberOfSearchesWithCardId> getCountedSearches(@PathVariable("cardId") long cardId) {
+        return ResponseEntity.ok(searchCounterService.getCountedSearch(cardId));
+    }
+
+    @GetMapping("/counter/top/{limit}")
+    ResponseEntity<List<CardForMainPage>> getTopSearchedCard(@PathVariable("limit") int limit) {
+        return ResponseEntity.ok(searchCounterService.getTopSearchedCards(limit));
+    }
+
 
 }
 
