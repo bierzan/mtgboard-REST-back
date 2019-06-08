@@ -83,7 +83,5 @@ public class User {
         this.offers.add(offer);
     }
 
-//    public void addMessage(Message message){
-//        this.messages.add(message);
-//    }
+
 }

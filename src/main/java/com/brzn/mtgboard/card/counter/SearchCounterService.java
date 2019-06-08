@@ -50,7 +50,7 @@ public class SearchCounterService {
         for (SearchCounter sc: top) {
             CardForMainPage cardHighlight = new CardForMainPage();
             Card card = sc.getCard();
-            OffersStatisticsByCard avgPrices = offerService.getOfferStatisticsByCardId(sc.getId());
+            OffersStatisticsByCard avgPrices = offerService.getOfferStatisticsByCardId(card.getId());
             cardHighlight.setAvgSell(avgPrices.getAvgSell());
             cardHighlight.setAvgWant(avgPrices.getAvgWant());
             cardHighlight.setId(card.getId());
