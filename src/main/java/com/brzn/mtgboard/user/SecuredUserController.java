@@ -48,7 +48,7 @@ public class SecuredUserController {
     }
 
     @PostMapping("/message")
-    public ResponseEntity<Message> addCardOffer(@RequestBody MessageFromForm msg,
+    public ResponseEntity<Message> sendMessage(@RequestBody MessageFromForm msg,
                                                 ServletRequest request) throws URISyntaxException, SQLDataException {
         if (securedUserService.checkUserToken(request)) {
             Message sendMsg = messageService.send(msg);

@@ -37,7 +37,7 @@ public class MessageDataForEmail {
         this.userTo = msg.getUserTo().getUsername();
         this.mailTo = msg.getUserTo().getEmail();
         this.offer = getOfferAsSingleString(msg.getOffer());
-        this.subject = String.format("Dotyczy karty: %s (%s)",
+        this.subject = String.format("Oferta: %s (%s)",
                 msg.getOffer().getCard().getName(),
                 msg.getOffer().getCard().getSet().getName());
         this.message = msg.getMessage();

@@ -34,9 +34,12 @@ public class MessageService {
 
         Message sendMessage = mapFromForm(msg);
 
-        emailSender.sendTemplateMessage(new MessageDataForEmail(sendMessage));
+        MessageDataForEmail email = new MessageDataForEmail(sendMessage);
+
+        emailSender.sendTemplateMessage(email);
 
         sendMessage.setDate(LocalDateTime.now());
+        sendMessage.setSubject(email.getSubject());
         messageRepo.save(sendMessage);
         return sendMessage;
 
@@ -49,7 +52,6 @@ public class MessageService {
         result.setUserTo(userService.getUserById(msg.getUserToId()));
 
         result.setMessage(msg.getMessage());
-        result.setSubject(msg.getSubject());
         return result;
     }
 }
