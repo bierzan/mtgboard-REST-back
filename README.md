@@ -1,8 +1,6 @@
 # MtG.Board
 *Application in development stage*
 
-*Readme in progress*
-
 An attempt to design **REST Service** that supports trading with **Magic the Gathering** cards.
 Each User may have two kinds of card offer lists:
  - wanted list - cards that he/she wants to acquire,
@@ -235,9 +233,9 @@ example:
 
 `/cards/name/<cardName>`
   
-  - posts cards into database by `<cardName>` - cards that were reprinted in many sets,
-  - `<cardName>` means full card name - case insensitive,
-  - all necessary data for card entity is provided by external API.
+- posts cards into database by `<cardName>` - cards that were reprinted in many sets,
+- `<cardName>` means full card name - case insensitive,
+- all necessary data for card entity is provided by external API.
 
 
 `/cards/name/set/<cardName>/<setName>`
@@ -248,29 +246,29 @@ example:
   - all necessary data for card entity is provided by external API
   
   
-  `/cards/name/set/<cardName>/<setName>`
-  - posts +1 counter for card search counts,
-  -`<cardName>` means full card name - case sensitive,
-  -`<setName>` means full set name that card was printed in - case sensitive.
+`/cards/name/set/<cardName>/<setName>`
+- posts +1 counter for card search counts,
+-`<cardName>` means full card name - case sensitive,
+-`<setName>` means full set name that card was printed in - case sensitive.
     
- `/users`
-  - creates new user based on user data in RequestBody
-  - to be modified to Spring Security registration process 
+`/users`
+- creates new user based on user data in RequestBody
+- to be modified to Spring Security registration process 
  
-  `/users/login`
-   - mocked logging
-   - based on data from UserDto user gets authorization and recieves JSON with token,
-   - to be replaced with Spring Security authorization process.
+`/users/login`
+- mocked logging
+- based on data from UserDto user gets authorization and recieves JSON with token,
+- to be replaced with Spring Security authorization process.
 
 `/user/cards`
 - endpoint requires authorization by token (to be replaced with Spring Security authorization)
 - creates new Offer for authorized user,
 - offer data based on request body,
      
-   `/user/message`
-   - endpoint requires authorization by token (to be replaced with Spring Security authorization)
-   - sends message to other user, and puts message data into database
-   - message data based on request body,
+`/user/message`
+- endpoint requires authorization by token (to be replaced with Spring Security authorization)
+- sends message to other user, and puts message data into database
+- message data based on request body,
      
   
 ### Used Technologies: 
