@@ -1,5 +1,6 @@
 # MtG.Board
 *Application in development stage*
+
 *Readme in progress*
 
 An attempt to design **REST Service** that supports trading with **Magic the Gathering** cards.
