@@ -261,11 +261,11 @@ example:
    - mocked logging
    - based on data from UserDto user gets authorization and recieves JSON with token,
    - to be replaced with Spring Security authorization process.
-   
-     `/user/cards`
-     - endpoint requires authorization by token (to be replaced with Spring Security authorization)
-     - creates new Offer for authorized user,
-     - offer data based on request body,
+
+`/user/cards`
+- endpoint requires authorization by token (to be replaced with Spring Security authorization)
+- creates new Offer for authorized user,
+- offer data based on request body,
      
    `/user/message`
    - endpoint requires authorization by token (to be replaced with Spring Security authorization)
