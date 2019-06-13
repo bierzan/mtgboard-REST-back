@@ -8,6 +8,8 @@ Each User may have two kinds of card offer lists:
  
 Application will allow users to search offers by card and present them in easy to compare manner.
 
+Front-end files are provided in separated repo [Mtg.Board-front](https://github.com/bierzan/mtgboard-REST-front).
+
 ### Implemented Features / REST API
 
 Service uses external API provided by [MagicTheGathering.io](https://magicthegathering.io/).
@@ -286,7 +288,7 @@ example:
 - offers list by user,
 - endpoints to modify or delete offer,
 - batch offer modification,
-- batch offer posting,
+- batch offer posting
  
 
 
