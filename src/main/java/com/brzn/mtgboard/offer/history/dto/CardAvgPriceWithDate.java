@@ -1,5 +1,6 @@
 package com.brzn.mtgboard.offer.history.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ public class CardAvgPriceWithDate {
 
     @Getter
     @Setter
+    @JsonFormat(pattern = "yyyy.MM.dd")
     private LocalDate date;
 
     @Getter
