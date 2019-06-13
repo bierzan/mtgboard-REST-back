@@ -4,7 +4,7 @@ import com.brzn.mtgboard.card.cardsSet.CardSet;
 import com.brzn.mtgboard.card.cardsSet.CardSetRepo;
 import com.brzn.mtgboard.card.cardsSet.CardSetService;
 import com.brzn.mtgboard.card.dto.CardForCardPage;
-import com.brzn.mtgboard.card.dto.CardForSearchResult;
+import com.brzn.mtgboard.card.dto.CardNameAndSetName;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,13 +37,13 @@ public class CardService {
         cardRepo.save(card);
     }
 
-    List<CardForSearchResult> findAllByPartialName(String name) throws IOException {
+    List<CardNameAndSetName> findAllByPartialName(String name) throws IOException {
         return cardRepo.findAllByPartialNameForSearchResult(name);
     }
 
-    List<CardForSearchResult> findAllByPartialNameFromApi(String name) throws IOException {
+    List<CardNameAndSetName> findAllByPartialNameFromApi(String name) throws IOException {
         List<Card> cards = getCardsFromExternalAPI(name);
-        return cards.stream().map(x -> new CardForSearchResult(x.getName(), x.getSet().getName())).collect(Collectors.toList());
+        return cards.stream().map(x -> new CardNameAndSetName(x.getName(), x.getSet().getName())).collect(Collectors.toList());
     }
 
     List<Card> getCardsFromExternalAPI(String name) throws IOException {
@@ -123,7 +123,7 @@ public class CardService {
         return cardRepo.findById(id).orElseThrow(SQLDataException::new);
     }
 
-    private CardForSearchResult mapToSearchByNameResult(Card card) {
-        return new CardForSearchResult(card.getName(), card.getSet().getName());
+    private CardNameAndSetName mapToSearchByNameResult(Card card) {
+        return new CardNameAndSetName(card.getName(), card.getSet().getName());
     }
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFormat(shape = JsonFormat.Shape.ANY)
-public class CardForSearchResult {
+public class CardNameAndSetName {
 
     @Getter
     @Setter
@@ -18,7 +18,7 @@ public class CardForSearchResult {
     @Setter
     private String setName;
 
-    public CardForSearchResult(String name, String setName) {
+    public CardNameAndSetName(String name, String setName) {
         this.name = name;
         this.setName = setName;
     }

@@ -2,7 +2,7 @@ package com.brzn.mtgboard.card;
 
 import com.brzn.mtgboard.card.counter.SearchCounterService;
 import com.brzn.mtgboard.card.dto.CardForCardPage;
-import com.brzn.mtgboard.card.dto.CardForSearchResult;
+import com.brzn.mtgboard.card.dto.CardNameAndSetName;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.bytebuddy.utility.RandomString;
 import org.junit.Test;
@@ -44,11 +44,11 @@ public class CardControllerTest {
     public void shouldGetCardByPartialNameFromApi() throws Exception {
 
         String partialName = RandomString.make(5);
-        List<CardForSearchResult> emptyList = new ArrayList<>();
-        List<CardForSearchResult> cards = new ArrayList<>();
-        cards.add(new CardForSearchResult(RandomString.make(3), RandomString.make(4)));
-        cards.add(new CardForSearchResult(RandomString.make(3), RandomString.make(4)));
-        cards.add(new CardForSearchResult(RandomString.make(3), RandomString.make(4)));
+        List<CardNameAndSetName> emptyList = new ArrayList<>();
+        List<CardNameAndSetName> cards = new ArrayList<>();
+        cards.add(new CardNameAndSetName(RandomString.make(3), RandomString.make(4)));
+        cards.add(new CardNameAndSetName(RandomString.make(3), RandomString.make(4)));
+        cards.add(new CardNameAndSetName(RandomString.make(3), RandomString.make(4)));
 
         when(cardService.findAllByPartialName(partialName)).thenReturn(emptyList);
         when(cardService.findAllByPartialNameFromApi(partialName)).thenReturn(cards);
@@ -64,10 +64,10 @@ public class CardControllerTest {
     public void shouldGetCardByPartialNameFromDatabase() throws Exception {
 
         String partialName = RandomString.make(5);
-        List<CardForSearchResult> cards = new ArrayList<>();
-        cards.add(new CardForSearchResult(RandomString.make(3), RandomString.make(4)));
-        cards.add(new CardForSearchResult(RandomString.make(3), RandomString.make(4)));
-        cards.add(new CardForSearchResult(RandomString.make(3), RandomString.make(4)));
+        List<CardNameAndSetName> cards = new ArrayList<>();
+        cards.add(new CardNameAndSetName(RandomString.make(3), RandomString.make(4)));
+        cards.add(new CardNameAndSetName(RandomString.make(3), RandomString.make(4)));
+        cards.add(new CardNameAndSetName(RandomString.make(3), RandomString.make(4)));
 
         when(cardService.findAllByPartialName(partialName)).thenReturn(cards);
 

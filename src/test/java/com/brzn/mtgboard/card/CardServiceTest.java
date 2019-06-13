@@ -2,7 +2,7 @@ package com.brzn.mtgboard.card;
 
 import com.brzn.mtgboard.card.cardsSet.CardSetRepo;
 import com.brzn.mtgboard.card.cardsSet.CardSetService;
-import com.brzn.mtgboard.card.dto.CardForSearchResult;
+import com.brzn.mtgboard.card.dto.CardNameAndSetName;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -34,9 +34,9 @@ public class CardServiceTest {
     public void shouldGetFromApiAndMapToDtoClass() throws IOException {
         String partialName = "a";
 
-        List<CardForSearchResult> cards = cardService.findAllByPartialNameFromApi(partialName);
+        List<CardNameAndSetName> cards = cardService.findAllByPartialNameFromApi(partialName);
         assertThat(cards.size(), is(not(0)));
-        assertThat(cards, hasItems(any(CardForSearchResult.class)));
+        assertThat(cards, hasItems(any(CardNameAndSetName.class)));
     }
 
     @Test

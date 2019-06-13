@@ -1,7 +1,7 @@
 package com.brzn.mtgboard.card;
 
 import com.brzn.mtgboard.card.dto.CardForCardPage;
-import com.brzn.mtgboard.card.dto.CardForSearchResult;
+import com.brzn.mtgboard.card.dto.CardNameAndSetName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,9 +13,9 @@ public interface CardRepo extends JpaRepository<Card, Long> {
     @Query(value = "SELECT * FROM cards where upper(name) like concat('%',upper(?1),'%')", nativeQuery = true)
     List<Card> findAllByPartialName(String name);
 
-    @Query(value = "SELECT new com.brzn.mtgboard.card.dto.CardForSearchResult(c.name, s.name) " +
+    @Query(value = "SELECT new com.brzn.mtgboard.card.dto.CardNameAndSetName(c.name, s.name) " +
             "FROM Card c JOIN c.set s WHERE upper(c.name) like concat('%',upper(?1),'%')")
-    List<CardForSearchResult> findAllByPartialNameForSearchResult(String name);
+    List<CardNameAndSetName> findAllByPartialNameForSearchResult(String name);
 
     @Query(value = "SELECT new com.brzn.mtgboard.card.dto.CardForCardPage" +
             "(c.id, c.name, c.names, c.manaCost, c.cmc, c.colors, c.type, c.rarity, s.name, c.text, c.flavor, c.artist, c.number, c.power, c.toughness, c.layout, c.multiverseId, c.imageUrl, c.languages)" +
