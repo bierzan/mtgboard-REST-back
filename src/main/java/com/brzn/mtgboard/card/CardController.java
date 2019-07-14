@@ -78,6 +78,11 @@ class CardController {
         return ResponseEntity.ok(searchCounterService.getCountedSearch(cardId));
     }
 
+    /**
+     * Gets cards with highest search rate value
+     * @param limit How many cards should be provided
+     * @return list of Cards
+     */
     @GetMapping("/counter/top/{limit}")
     ResponseEntity<List<CardForMainPage>> getTopSearchedCard(@PathVariable("limit") int limit) {
         return ResponseEntity.ok(searchCounterService.getTopSearchedCards(limit));
