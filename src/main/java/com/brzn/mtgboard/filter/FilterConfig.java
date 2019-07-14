@@ -1,3 +1,4 @@
+/*
 package com.brzn.mtgboard.filter;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -19,4 +20,4 @@ public class FilterConfig {
 
     }
 
-}
+}*/
