@@ -5,7 +5,6 @@ import com.brzn.mtgboard.message.MessageService;
 import com.brzn.mtgboard.message.dto.MessageFromForm;
 import com.brzn.mtgboard.offer.Offer;
 import com.brzn.mtgboard.offer.OfferService;
-import com.sun.jndi.toolkit.url.Uri;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,10 +48,10 @@ public class SecuredUserController {
 
     @PostMapping("/message")
     public ResponseEntity<Message> sendMessage(@RequestBody MessageFromForm msg,
-                                                ServletRequest request) throws URISyntaxException, SQLDataException {
+                                               ServletRequest request) throws URISyntaxException, SQLDataException {
         if (securedUserService.checkUserToken(request)) {
             Message sendMsg = messageService.send(msg);
-            return ResponseEntity.created(new URI("/user/messages/"+sendMsg.getId()))
+            return ResponseEntity.created(new URI("/user/messages/" + sendMsg.getId()))
                     .build();
         }
         return ResponseEntity.badRequest()
