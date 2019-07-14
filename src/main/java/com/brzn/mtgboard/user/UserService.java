@@ -1,6 +1,8 @@
 package com.brzn.mtgboard.user;
 
 import com.brzn.mtgboard.exceptionHandler.SQLRecordNotUniqueException;
+import com.brzn.mtgboard.user.role.Role;
+import com.brzn.mtgboard.user.role.RoleRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,18 +12,21 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.transaction.Transactional;
 import java.sql.SQLDataException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @Transactional
 public class UserService {
 
     private UserRepo userRepo;
+    private RoleRepository roleRepository;
 
-    @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, RoleRepository roleRepository) {
         this.userRepo = userRepo;
+        this.roleRepository = roleRepository;
     }
-
 
     public void saveUser(User user) throws SQLRecordNotUniqueException {
         if (ifUsernameExists(user.getUsername())) {
@@ -32,8 +37,10 @@ public class UserService {
         user.setRegistered(LocalDateTime.now());
         user.setLogged(LocalDateTime.now());
         user.setEnabled(true);
-        user.setRole(Role.USER);
-
+        Role role = roleRepository.findByName("ROLE_USER");
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
         userRepo.save(getUserWithHashedPassword(user));
     }
 
