@@ -1,21 +1,42 @@
 package com.brzn.mtgboard.config;
 
+import com.brzn.mtgboard.filter.CsrfTokenResponseHeaderBindingFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final DataSource dataSource;
+
+    public SecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+
+//    @Override
+//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("user1").password("{noop}user123").roles("USER")
+//                .and()
+//                .withUser("admin1").password("{noop}admin123").roles("ADMIN");
+//    }
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("user1").password("{noop}user123").roles("USER")
-                .and()
-                .withUser("admin1").password("{noop}admin123").roles("ADMIN");
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -23,12 +44,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic()
                 .and()
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/cards/counter/top/2").hasRole("USER")
                 .antMatchers("/cards/counter/top/1").hasRole("ADMIN")
                 .and()
                 .formLogin();
+
+        http.addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class);
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
